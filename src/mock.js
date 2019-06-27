@@ -52,17 +52,17 @@ const ProjectListData = () => {
                 missions: []
             }
 
+            //编辑任务的方法
             for (let k = 0; k < missionCount; k++) {
-
             let missionsrow={
-                addr: Random.city(true) + 'XXX敬老院',
+               // addr: Random.city(true) + 'XXX敬老院',
                 missionName:"任务"+Random.string('123456789', 1),
-                missionTime:Random.datetime('yyyy-MM-dd'),
+               // missionTime:Random.datetime('yyyy-MM-dd'),
                   // 是否完成状态
-                finish: Random.boolean(),
-                ContractNo:"HT"+Random.string('123456789', 5),
-                ContractName:"XXXXX"+Random.string('123456789', 2)+"项目",
-                projectName: Random.missionName()
+               // finish: Random.boolean(),
+               ProjectNo:"HT"+Random.string('123456789', 5),
+               ProjectName:"XXXXX"+Random.string('123456789', 2)+"项目",
+               projectNamestwo: Random.missionName()
 
             }
 
@@ -107,8 +107,8 @@ const MissionListData = () => {
              missionTime:Random.datetime('yyyy-MM-dd'),
               // 是否完成状态
             finish: Random.boolean(),
-            ContractNo:"HT"+Random.string('123456789', 5),
-            ContractName:"XXXXX"+Random.string('123456789', 2)+"项目",
+            ProjectNo:"HT"+Random.string('123456789', 5),
+            ProjectName:"XXXXX"+Random.string('123456789', 2)+"项目",
             // MissionContent:Random.paragraph(2, 3),
             // MissionContentList:[]
         }
@@ -147,3 +147,4 @@ Mock.mock('/Project/GetProjectList', 'get', ProjectListData)
 Mock.mock('/Mission/GetMissionList','get',MissionListData)
 Mock.mock('/Information/GetInformationList','get',InformationList)
 Mock.mock('/Mission/GetReportingrecordList','get',ReportingrecordList)
+//新建任务 编辑任务 post请求

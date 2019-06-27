@@ -40,7 +40,7 @@ export default {
       GetMissionList("")
         .then(res => {
           this.MissionData = res.data;
-         
+           console.log(res.data)
         })
         .catch(err => {
           console.log(err);

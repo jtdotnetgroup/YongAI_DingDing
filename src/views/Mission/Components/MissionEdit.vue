@@ -10,14 +10,14 @@
       <van-row>
 
         <van-cell-group>
-          <van-field :value="MissionDate.ContractNo" label="合同编码" disabled/>
+          <van-field :value="MissionDate.ProjectNo" label="合同编码" disabled/>
         </van-cell-group>
 
       </van-row>
 
       <van-row>
         <van-cell-group>
-          <van-field :value="MissionDate.ContractName" label="项目名称" disabled/>
+          <van-field :value="MissionDate.ProjectName" label="项目名称" disabled/>
         </van-cell-group>
       </van-row>
     </div>

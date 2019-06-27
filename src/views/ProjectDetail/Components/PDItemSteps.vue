@@ -25,7 +25,7 @@
             <template v-for="(item,index) in item.missions" >
               <van-col span="7" class="vanstepcontent" :key="index">
                 <!-- <div @click="OnClick">{{item}}</div> -->
-                <van-button type="primary"  @click="OnClick(item)" size="mini">{{item.projectName}}</van-button>
+                <van-button type="primary"  @click="OnClick(item)" size="mini">{{item.projectNamestwo}}</van-button>
                 </van-col>
             </template>
           </van-col>

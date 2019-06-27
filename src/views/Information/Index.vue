@@ -45,7 +45,7 @@ export default {
       GetInformationList("")
         .then(res => {
           this.InformationData = res.data;
-             
+            // console.log(res.data)
         })
         .catch(err => {
           console.log(err);
