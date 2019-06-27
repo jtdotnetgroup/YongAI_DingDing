@@ -1,15 +1,16 @@
 
- const store = {
+const store = {
     state: {
-        activeProject:{}
+        activeProject: {}
     },
-    mutations:{
-        SET_ACTIVEPROJECT:(state,payload)=>{
-            state.activeProject=payload;
+    mutations: {
+        SET_ACTIVEPROJECT: (state, payload) => {
+            sessionStorage.setItem('activeProject', JSON.stringify(payload))
+            state.activeProject = payload;
         }
     },
-    actions:{
-        
+    actions: {
+
     }
 }
 
