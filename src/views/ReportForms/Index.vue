@@ -29,9 +29,9 @@ export default {
   data() {
     return {
       ListData: [
-        { icon: require("@/assets/images/histogram.png"), text: "应收账款汇总表" },
+        { icon: require("@/assets/images/柱状图.png"), text: "应收账款汇总表" },
         { icon: require("@/assets/images/pie.png"), text: "应收账款明细表" },
-        { icon: require("@/assets/images/analyze02.png"), text: "收账进度分析" }
+        { icon: require("@/assets/images/粮食动态决策分析系统.png"), text: "收账进度分析" }
       ]
     };
   }

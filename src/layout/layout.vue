@@ -8,16 +8,28 @@
     <div id="middle">
        <keep-alive >    
          <!-- 组件缓存，用于缓存组件的意思 -->
-      <router-view  v-if="this.$route.meta.keepalive" />
+      <!-- <router-view  v-if="this.$route.meta.keepalive" /> -->
+       <transition mode="out-in" :duration="{ enter:250, leave: 250 }" 
+        enter-active-class="animated fadeInLeft" 
+        leave-active-class="animated fadeOutRight">
+        <router-view  v-if="this.$route.meta.keepalive" />
+      </transition>
       </keep-alive>
+
+
+      <transition mode="out-in" :duration="{ enter:250, leave: 250 }" 
+      enter-active-class="animated fadeInLeft" 
+      leave-active-class="animated fadeOutRight"
+      >
       <router-view v-if="!this.$route.meta.keepalive"></router-view>
-      
+      </transition>
     </div>
     <TabBar v-if="tabbar" id="tabbar" :activetab="activetab"/>
   </div>
 </template>
 
 <script>
+import "@/assets/css/animate.css"
 export default {
   name: "layout",
   components: {

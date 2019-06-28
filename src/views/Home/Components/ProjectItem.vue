@@ -1,8 +1,8 @@
 <template>
   <van-panel class="ProjectItem" :title="Project.addr" :status="Project.stage">
     <van-row class="projectItemHeader" slot="header">
-      <van-col span="20">{{Project.addr}}</van-col>
-      <van-col class="projectStage" span="4">{{Project.stage}}</van-col>
+      <van-col span="19">{{Project.addr}}</van-col>
+      <van-col class="projectStage" span="5">{{Project.stage}}</van-col>
     </van-row>
 
     <van-row class="projectItemContent">
@@ -23,15 +23,16 @@
       <van-col span="4">
         <!-- <van-button round type="info" size="normal"> -->
           <a class="tel" :href="'tel:'+Project.contacts.phone">
-            <span><van-icon size="20px" color="#fff" name="phone"/></span>
+            <!-- <span><van-icon size="20px" color="#fff" name="phone"/></span> -->
+          <span><van-icon size="35px"  name="phone-circle-o"/></span> 
           </a>
         <!-- </van-button> -->
       </van-col>
     </van-row>
 
     <van-row class="projectItemFooter" slot="footer">
-      <van-col span="20">{{Project.updateTime}}</van-col>
-      <van-col class="updateDate" span="4">{{updateDate}}</van-col>
+      <van-col span="19">{{Project.updateTime}}</van-col>
+      <van-col class="updateDate" span="5">{{updateDate}}</van-col>
     </van-row>
   </van-panel>
 </template>
@@ -53,6 +54,7 @@ export default {
     updateDate() {
       const dic = {
         years: "年",
+        "a year": "年",
         months: " 个月",
         days: "天",
         hours: "小时",
@@ -91,13 +93,15 @@ export default {
 .updateDate {
   border: 1px solid rgb(214, 133, 101);
   text-align: center;
-  color: rgb(214, 133, 101);
+  color:#fff;
+  border-radius:30px;
+  background-color:  rgb(214, 133, 101);
 }
 .projectItemFooter {
   text-align: left;
 }
 .tel{
-  background-color: rgb(35, 114, 233);
+  color: #fff;
   padding: 8px;
   border-radius: 100%;
   vertical-align: middle;
@@ -107,5 +111,7 @@ export default {
 .tel i{
   vertical-align: middle;
   top: -2px;
+  background-color: #3487e6; 
+  border-radius: 100%
 }
 </style>

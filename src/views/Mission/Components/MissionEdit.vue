@@ -38,10 +38,10 @@
 
     <van-row>
       <van-cell-group>
-        <van-field required v-model="Reportprogress" label="汇报进度" placeholder="请输入汇报进度">
+        <van-field required v-model="Reportprogress" type="number" label="汇报进度" placeholder="请输入汇报进度">
           <b slot="button" class="colorlable">%</b>
         </van-field>
-        <van-field required v-model="Reportworkinghours" label="汇报工时" placeholder="请输入汇报工时">
+        <van-field required v-model="Reportworkinghours" type="number" label="汇报工时" placeholder="请输入汇报工时">
           <b slot="button" class="colorlable">小时</b>
         </van-field>
       </van-cell-group>

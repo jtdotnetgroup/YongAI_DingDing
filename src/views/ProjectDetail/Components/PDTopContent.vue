@@ -14,15 +14,16 @@
     
     <van-row>
       <van-row class="projectbottom">
-        <van-col span="4">客户地址</van-col>
-        <van-col span="17">
-          {{projecDate.addr}}
-        
+        <van-col span="4"><span class="spanPhoneAndadd">客户地址</span></van-col>
+        <van-col span="16">
+          <span class="spanPhoneAndadd">
+          {{projecDate.addr}}     
+          </span>
         </van-col>
-         <van-col span="1" class="rowcol"  >
-          <van-icon class="iconClass" name="location-o"/>
-        </van-col>
+         <van-col span="3" class="rowcol"  >
+          <van-icon class="iconAddr" name="location-o"/>
 
+        </van-col>
       </van-row >
 
       <van-row class="projectbottom">
@@ -32,11 +33,15 @@
       </van-row>
 
       <van-row>
-        <van-col span="4">联系方式</van-col>
-        <van-col span="17">
-          {{projecDate.contacts.phone}}  
-        </van-col>
-        <van-col span="1" class="rowcol"> <van-icon class="iconClass" name="phone-circle-o"/></van-col>
+        <van-col span="4"><span class="spanPhoneAndadd">联系方式</span></van-col>
+        <van-col span="16">
+          <span class="spanPhoneAndadd">{{projecDate.contacts.phone}}</span>  
+        </van-col >
+        <van-col span="3" class="rowcol"> 
+           <a class="tel" :href="'tel:'+projecDate.contacts.phone">
+          <van-icon class="iconClass" name="phone-circle-o"/>
+           </a>
+          </van-col>
       </van-row>
 
     </van-row>
@@ -66,11 +71,34 @@ export default {
 </script>
 
 <style  scoped>
+.spanPhoneAndadd {
+line-height: 3
+}
+.tel{
+  color: #fff;
+
+  padding: 8px;
+  border-radius: 100%;
+  vertical-align: middle;
+  width:40px;
+  height: 40px;
+}
+.tel i{
+  vertical-align: middle;
+  top: -2px;
+  background-color: #3487e6; 
+  border-radius: 100%
+}
 .rowcol{
 text-align: center;
 }
+
+.iconAddr{
+ font-size: 2.0rem;
+ margin-left: 5px;
+}
 .iconClass{
-  font-size: 1.3rem;
+  font-size: 2.0rem;
 }
 .ProjectItem {
   font-size: 0.8rem;
