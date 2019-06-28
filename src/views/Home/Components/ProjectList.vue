@@ -48,16 +48,7 @@ export default {
           console.log(err);
         });
     },
-    // ItemClick(projectItem) {
-    //   console.log(projectItem);
-    //   //this.$router.push({name:'/projectdetails',params:{projectItem:projectItem})
-    //   this.$router.push({
-    //     name:'projectdetailsIndex',
-    //     params:{
-    //       projectItem:projectItem
-    //     }
-    //   })
-    // }
+    
   },
   computed: {
     projectList() {

@@ -74,9 +74,7 @@
                 <div><span>{{item.reportTime}}</span></div>
                 <div class="containerclosestepdiv"><label>汇报内容:</label> </div>
                 <div><p>{{item.reportContent}}</p> </div>
-                <!-- <div><label>汇报内容:</label><p>{{item.reportContent}}</p></div> -->
-                <!-- <van-cell title="汇报时间" :value="item.reportTime" size="large" />
-              <van-cell title="汇报内容" :value="item.reportContent" size="large" />  -->
+
                </div>            
             </van-step>
             </template>

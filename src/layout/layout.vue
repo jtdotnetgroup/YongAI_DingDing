@@ -57,4 +57,7 @@ export default {
 #middle {
   padding: 25px 0 25px 0
 }
+#navbar{
+  z-index 999 !important;
+}
 </style>

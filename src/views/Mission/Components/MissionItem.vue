@@ -3,7 +3,7 @@
     <van-row class="projectHeader" slot="header">
       <van-col span="20">{{Mission.addr}}</van-col>
       <van-col class="projectStage" span="4">
-        <van-icon class="Iconstar" name="star-o"/>
+        <van-icon class="Iconstar" name="star"/>
       </van-col>
     </van-row>
 
@@ -54,7 +54,7 @@ export default {
 <style  scoped>
 .Iconstar {
   float: right;
-  color: yellow;
+  color: #f0d852;
   font-size: 1.3rem;
 }
 .editicon {
