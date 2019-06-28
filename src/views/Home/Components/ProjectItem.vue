@@ -21,11 +21,11 @@
         </div>
       </van-col>
       <van-col span="4">
-        <van-button round type="info" size="normal">
+        <!-- <van-button round type="info" size="normal"> -->
           <a class="tel" :href="'tel:'+Project.contacts.phone">
-            <van-icon size="13px" color="#fff" name="phone-o"/>
+            <span><van-icon size="20px" color="#fff" name="phone"/></span>
           </a>
-        </van-button>
+        <!-- </van-button> -->
       </van-col>
     </van-row>
 
@@ -96,5 +96,16 @@ export default {
 .projectItemFooter {
   text-align: left;
 }
-
+.tel{
+  background-color: rgb(35, 114, 233);
+  padding: 8px;
+  border-radius: 100%;
+  vertical-align: middle;
+  width:40px;
+  height: 40px;
+}
+.tel i{
+  vertical-align: middle;
+  top: -2px;
+}
 </style>

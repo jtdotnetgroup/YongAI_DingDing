@@ -6,7 +6,7 @@
     left-arrow
     fixed
     @click-left="onClickLeft"
-    @click-right="onClickRight"
+    @click-right="onClickRight" 
   >
     <div id="navRight" slot="right" v-if="hasRight">
       <span v-if="!!this.rightText">{{rightText}}</span>
@@ -65,5 +65,8 @@ export default {
 #navRightIcon{
   font-size: 1.2rem;
   padding: 10px;
+}
+.navbar{
+  z-index: 999;
 }
 </style>
