@@ -102,15 +102,16 @@ const MissionListData = () => {
     for (let index = 0; index < count; index++) {
         let row={
              // 地址
-             addr: Random.city(true) + 'XXX敬老院',
-             missionName:"任务"+Random.string('123456789', 1),
-             missionTime:Random.datetime('yyyy-MM-dd'),
+            addr: Random.city(true) + 'XXX敬老院',
+            missionName:"任务"+Random.string('123456789', 1),
+            missionTime:Random.datetime('yyyy-MM-dd'),
               // 是否完成状态
             finish: Random.boolean(),
             ProjectNo:"HT"+Random.string('123456789', 5),
             ProjectName:"XXXXX"+Random.string('123456789', 2)+"项目",
-            // MissionContent:Random.paragraph(2, 3),
-            // MissionContentList:[]
+             //委派人员
+            delegating:Random.boolean(),
+           
         }
       
         data.push(row)
@@ -129,7 +130,6 @@ const InformationList=()=>{
 for (let index = 0; index < count; index++) {
 
    let row={
-
     addr: Random.city(true) + 'XXX敬老院',
     expire:Random.datetime('yyyy-MM-dd'),
     money: Random.string('123456789', 4), 

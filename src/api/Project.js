@@ -7,3 +7,11 @@ export function GetProjectList(params){
         params
     })
 }
+
+export function GetTest(params){
+    return request({
+        url:'/f/dingtalk/index/getAccessToken',
+        method:'get',
+        headers:params
+    })
+}

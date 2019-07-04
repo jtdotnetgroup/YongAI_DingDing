@@ -4,17 +4,16 @@ import router from './router'
 import store from './store'
 import moment from 'moment'
 
-Vue.config.productionTip = false
+ import * as dd from 'dingtalk-jsapi'
 
+Vue.config.productionTip = false
 
 moment.locale('cn')
 Vue.prototype.$moment=moment
 
-
 require('./mock.js')
 
 import{
-
   Lazyload,
   Icon,
   Row,
@@ -54,8 +53,25 @@ Vue.use(Lazyload)
 .use(Popup)
 .use(DatetimePicker)
 
+
+// dd.config({
+//   agentId:'273268283',
+//   corpId:'ding2ced2e5420af006835c2f4657eb6378f',
+//   timeStamp:'',
+//   nonceStr:'',
+//   signature:'',
+//   type:0,
+//   jsApiList:[
+//     'biz.map.locate',
+//     'biz.map.search',
+//     'device.geolocation.get'
+//   ]
+// })
+
+
 new Vue({
   router,
   store,
+  dd,
   render: h => h(App)
 }).$mount('#app')

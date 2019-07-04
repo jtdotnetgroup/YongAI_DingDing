@@ -6,6 +6,13 @@
           <MissionItem v-for="(item,index) in MissionList" :key="index"  :Mission="item" />
         </van-list>
       </van-tab>
+
+       <van-tab title="我发起的任务">
+       <van-list id="MissionList">      
+          <MissionItem v-for="(item,index) in MissionList" :key="index"  :Mission="item" />
+        </van-list>
+      </van-tab>
+
       <van-tab title="全部任务">
          <van-list id="MissionList">       
           <MissionItem  v-for="(item,index) in MissionList" :key="index" :Mission="item" />      
@@ -54,7 +61,12 @@ export default {
         return this.MissionData.filter(e => {
           return !e.finish;
         });
-      } else {
+      } else if(this.active===1) {
+        return this.MissionData.filter(e=>{
+          return e.delegating
+        })
+        
+      }else{
         return  this.MissionData;
       }
     }

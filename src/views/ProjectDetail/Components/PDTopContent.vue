@@ -10,42 +10,44 @@
         <van-col span="20">{{projecDate.updateTime}}</van-col>
       </van-row>
     </template>
-    <hr/>
-    
+    <hr />
+
     <van-row>
       <van-row class="projectbottom">
-        <van-col span="4"><span class="spanPhoneAndadd">客户地址</span></van-col>
+        <van-col span="4">
+          <span class="spanPhoneAndadd">客户地址</span>
+        </van-col>
         <van-col span="16">
-          <span class="spanPhoneAndadd">
-          {{projecDate.addr}}     
-          </span>
+          <span class="spanPhoneAndadd">{{projecDate.addr}}</span>
         </van-col>
-         <van-col span="3" class="rowcol"  >
-          <van-icon class="iconAddr" name="location-o"/>
-
+        <van-col span="3" class="rowcol">
+          <div @click="AddrClick">
+            <van-icon class="iconAddr" name="location-o" />
+          </div>
         </van-col>
-      </van-row >
+      </van-row>
 
       <van-row class="projectbottom">
         <van-col span="4">主联系人</van-col>
         <van-col span="6">{{projecDate.contacts.name}}</van-col>
-         <van-col span="10">{{projecDate.contacts.pose}}</van-col>
+        <van-col span="10">{{projecDate.contacts.pose}}</van-col>
       </van-row>
 
       <van-row>
-        <van-col span="4"><span class="spanPhoneAndadd">联系方式</span></van-col>
+        <van-col span="4">
+          <span class="spanPhoneAndadd">联系方式</span>
+        </van-col>
         <van-col span="16">
-          <span class="spanPhoneAndadd">{{projecDate.contacts.phone}}</span>  
-        </van-col >
-        <van-col span="3" class="rowcol"> 
-           <a class="tel" :href="'tel:'+projecDate.contacts.phone">
-          <van-icon class="iconClass" name="phone-circle-o"/>
-           </a>
-          </van-col>
+          <span class="spanPhoneAndadd">{{projecDate.contacts.phone}}</span>
+        </van-col>
+        <van-col span="3" class="rowcol">
+          <a class="tel" :href="'tel:'+projecDate.contacts.phone">
+            <van-icon class="iconClass" name="phone-circle-o" />
+          </a>
+        </van-col>
       </van-row>
-
     </van-row>
-     <hr/>
+    <hr />
   </van-panel>
 </template>
 
@@ -57,9 +59,26 @@ export default {
       //projecDate:this.$route.params.projectItem
     };
   },
+  //生命周期函数
   mounted() {
-   // console.log(this.$route.params.projectItem);
-
+    // console.log(this.$route.params.projectItem);
+  },
+  methods: {
+    AddrClick() {     
+      dd.ready(function() {
+        dd.device.geolocation.get({
+          targetAccuracy: 200,
+          coordinate: 1,
+          withReGeocode: true,
+          useCache: true, //默认是true，如果需要频繁获取地理位置，请设置false
+          onSuccess: function(result) {
+            alert("点击");
+            alert(JSON.stringify(result));
+          },
+          onFail: function(err) {}
+        });
+      });
+    }
   },
 
   computed: {
@@ -72,33 +91,33 @@ export default {
 
 <style  scoped>
 .spanPhoneAndadd {
-line-height: 3
+  line-height: 3;
 }
-.tel{
+.tel {
   color: #fff;
 
   padding: 8px;
   border-radius: 100%;
   vertical-align: middle;
-  width:40px;
+  width: 40px;
   height: 40px;
 }
-.tel i{
+.tel i {
   vertical-align: middle;
   top: -2px;
-  background-color: #3487e6; 
-  border-radius: 100%
+  background-color: #3487e6;
+  border-radius: 100%;
 }
-.rowcol{
-text-align: center;
+.rowcol {
+  text-align: center;
 }
 
-.iconAddr{
- font-size: 2.0rem;
- margin-left: 5px;
+.iconAddr {
+  font-size: 2rem;
+  margin-left: 5px;
 }
-.iconClass{
-  font-size: 2.0rem;
+.iconClass {
+  font-size: 2rem;
 }
 .ProjectItem {
   font-size: 0.8rem;

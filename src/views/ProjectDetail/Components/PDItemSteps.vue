@@ -84,7 +84,7 @@ export default {
           return this.$store.state.project.activeProject.stageDetails;
         }
         let project = JSON.parse(sessionStorage.getItem("activeProject"));
-        this.$store.commit("SET_ACTIVEPROJECT", project);
+        this.$store.commit("SET_ACTIVEPROJECT", project);//赋值 把值存在 state
         return project.stageDetails;
       }
     }

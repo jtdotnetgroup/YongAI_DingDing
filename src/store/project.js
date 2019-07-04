@@ -10,7 +10,7 @@ const store = {
         }
     },
     actions: {
-
+        
     }
 }
 
