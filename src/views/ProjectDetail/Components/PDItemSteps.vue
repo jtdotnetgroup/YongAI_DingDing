@@ -23,14 +23,26 @@
           </van-col>
         </van-row>
         <van-row>
-          <van-col span="5">项目任务</van-col>
-          <van-col span="19">
-            <template v-for="(item,index) in item.missions">
-              <van-col span="7" class="vanstepcontent" :key="index">
+          <van-col span="6">项目任务:</van-col>
+          <van-col span="18">
+          
+              <div class="container"  >
+                <div :key="index" v-for="(item,index) in item.missions" >
+                   
+                  
+                    <div class="divtext"  @click="OnClick(item)">
+                      {{item.projectNamestwo}} 
+                 
+                    </div>              
+                </div>
+              </div>
+
+     <!-- <template v-for="(item,index) in item.missions"> -->
+              <!-- <van-col span="7" class="vanstepcontent" :key="index"> -->
                 <!-- <div @click="OnClick">{{item}}</div> -->
-                <van-button type="primary"  @click="OnClick(item)" size="mini">{{item.projectNamestwo}}</van-button>
-                </van-col>
-            </template>
+                <!-- <van-button type="primary"  @click="OnClick(item)" size="mini">{{item.projectNamestwo}}</van-button>
+                </van-col> -->
+            <!-- </template> -->
           </van-col>
         </van-row>
       </van-step>
@@ -93,9 +105,26 @@ export default {
 </script>
 
 <style  scoped>
+
+.container{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 3fr));
+  grid-template-rows: repeat(2, auto);
+  grid-row-gap: 10px;
+  grid-column-gap: 10px
+
+}
+
+.divtext{
+  border-radius: 10px;
+  text-align: center;
+  word-wrap:break-word ;
+  cursor: pointer;background-color: #4CAF50;
+}
+
+
 .iconcolor {
   float: right;
-
   font-size: 1.3rem;
 }
 

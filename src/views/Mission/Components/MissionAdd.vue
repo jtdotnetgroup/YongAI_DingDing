@@ -18,7 +18,8 @@
         <van-popup v-model="showPicker" position="bottom">
           <van-picker
             show-toolbar
-            :columns="columns"
+            :default-index="0"
+            :columns="get"
             @cancel="showPicker = false"
             @confirm="onConfirm"
             @change="onChange"
@@ -26,12 +27,37 @@
         </van-popup>
       </van-row>
 
+
+      
+
+
       <van-row>
         <van-cell-group>
           <van-field :value="this.ContractName" label="项目名称" disabled/>
         </van-cell-group>
       </van-row>
     </div>
+
+
+       <van-row>
+        <van-field
+          readonly
+          clickable
+          label="任务阶段"
+          :value="TaskStage"
+          placeholder="选择任务阶段"
+          @click="showTaskStage = true"
+        />
+        <van-popup v-model="showTaskStage" position="bottom">
+          <van-picker
+            show-toolbar
+            :columns="columnsss"
+            @cancel="showTaskStage = false"
+            @confirm="onConfirmTaskStage"
+          
+          />
+        </van-popup>
+      </van-row>
 
     <van-row>
       <van-cell-group>
@@ -107,6 +133,12 @@ const citys = {
   HT20190619: ["HT1901xxxx项目"]
 };
 
+// const citys = [{id:"HT20190617",name:"HT1701xxxx项目"},{id:"HT20190618",name:"HT1801xxxx项目"}];
+
+// {
+//   {id:"",name:""}
+// }
+
 export default {
   // components: {
   //   MissionAddTabFooter: () => import("./MissionAddTabFooter")
@@ -116,33 +148,75 @@ export default {
       MissionContent: "",
       ContractNo: "",
       showPicker: false,
+      showTaskStage:false,
       showstarttime: false,
       showendtime: false,
       ContractName: "",
-     
+      TaskStage:'',//任务阶段
        currentDatestarttime: new Date(),
        currentDateendtime: new Date(),
        StartTime:'',
        EndTime:'',
-      columns: [
+       columnsss:["阶段一","阶段二","阶段三"],
+       columns: [
         {
+         
           values: Object.keys(citys),
+          //values: citys[0].id,
           className: "column1"
         },
         {
-          values: citys["HT20190617"],
+          //values: citys[0][0].name,
+          values: citys['HT20190617'],
           className: "column2",
           defaultIndex: 2
         }
       ]
     };
   },
+  created(){
+    // const citys = [{id:"HT20190617",name:"HT1701xxxx项目"},{id:"HT20190618",name:"HT1801xxxx项目"}];
+    // console.log( citys[0].id )
+
+       //// const citys = {
+       ////   HT20190617: ["HT1701xxxx项目"],
+       ////   HT20190618: ["HT1801xxxx项目"],
+       ////   HT20190619: ["HT1901xxxx项目"]
+       //// };
+
+      const result=[]
+
+      const data=[
+      {id:"1",contract:"HT20190617",project:"HT1701xxxx项目"},
+      {id:"2",contract:"HT20190618",project:"HT1801xxxx项目"},
+      {id:"3",contract:"HT20190619",project:"HT1901xxxx项目"}]
+
+
+     const cols={}
+      var datacolumns=[];
+      data.forEach(e=>{
+         cols[e.contract]=[e.project]    
+      })
+      
+      result.push({values:Object.keys(cols) ,className:'contract'},{values:cols[Object.keys(cols)],className:'project'})
+      console.log(result)
+    
+  },
   methods: {
+    
+    //合同编号
     onConfirm(value) {
       this.ContractNo = value[0];
       this.showPicker = false;
       this.ContractName = value[1];
     },
+
+    //项目阶段的回调方法
+    onConfirmTaskStage(value){
+      this.TaskStage=value
+      this.showTaskStage = false;
+    },
+
     // 开始时间的确定关闭
     OnConfirmstarttime(value) {
       this.showstarttime = false;
@@ -162,10 +236,39 @@ export default {
       this.showendtime = false;
     },
 
-    onChange(picker, values) {
+   //合同编号 联动选择 项目名称
+     onChange(picker, values) {  
       picker.setColumnValues(1, citys[values[0]]);
+
     }
   },
+  computed:{
+
+     get(){
+
+      const result=[]
+
+      const data=[
+      {id:"1",contract:"HT20190617",project:"HT1701xxxx项目"},
+      {id:"2",contract:"HT20190618",project:"HT1801xxxx项目"},
+      {id:"3",contract:"HT20190619",project:"HT1901xxxx项目"}]
+
+
+     const cols={}
+      data.forEach(e=>{  
+         cols[e.contract]=[e.project] 
+      })
+
+    var key=Object.keys(cols)
+      
+    result.push({values:Object.keys(cols) ,className:'contract'},{values:cols[key[0]],className:'project'})
+      
+     return   result;
+
+
+  }
+
+  }
  
 };
 </script>

@@ -10,6 +10,7 @@ Vue.config.productionTip = false
 
 moment.locale('cn')
 Vue.prototype.$moment=moment
+Vue.prototype.$dd=dd;  //全局变量共用的方法
 
 require('./mock.js')
 
@@ -68,10 +69,9 @@ Vue.use(Lazyload)
 //   ]
 // })
 
-
+// 放在new vue 里面必须是vue组件库实习的
 new Vue({
   router,
   store,
-  dd,
   render: h => h(App)
 }).$mount('#app')

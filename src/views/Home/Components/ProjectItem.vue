@@ -1,7 +1,7 @@
 <template>
-  <van-panel class="ProjectItem" :title="Project.addr" :status="Project.stage">
+  <van-panel class="ProjectItem" :title="Project.custName" :status="Project.stage">
     <van-row class="projectItemHeader" slot="header">
-      <van-col span="19">{{Project.addr}}</van-col>
+      <van-col span="19">{{Project.custName}}</van-col>
       <van-col class="projectStage" span="5">{{Project.stage}}</van-col>
     </van-row>
 
@@ -11,7 +11,7 @@
           <van-row>
             <van-col span="24">
               <van-icon name="user-o"/>
-              {{'业务员：'+Project.contacts.name+' '+Project.contacts.phone}}
+              {{'业务员：'+Project.contacts.name+' '+Project.mobile}}
             </van-col>
             <van-col span="24">
               <van-icon name="location-o"/>
@@ -22,7 +22,7 @@
       </van-col>
       <van-col span="4">
         <!-- <van-button round type="info" size="normal"> -->
-          <a class="tel" :href="'tel:'+Project.contacts.phone">
+          <a class="tel" :href="'tel:'+Project.mobile">
             <!-- <span><van-icon size="20px" color="#fff" name="phone"/></span> -->
           <span><van-icon size="35px"  name="phone-circle-o"/></span> 
           </a>
