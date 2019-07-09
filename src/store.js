@@ -80,12 +80,12 @@ export default new Vuex.Store({
 
     },
 
-   
+  
   },
   modules: {
     project,
     mission,
-   
+
   },
   getters: {
 

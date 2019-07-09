@@ -3,12 +3,12 @@
     <div slot="header">
       <van-row>
         <van-cell-group>
-          <van-field  label="任务名" />
+          <van-field required v-model="Taskname" label="任务名" />
         </van-cell-group>
       </van-row>
       <van-row>
         <van-field
-        required
+          required
           readonly
           clickable
           label="合同编码"
@@ -20,7 +20,7 @@
           <van-picker
             show-toolbar
             :default-index="0"
-            :columns="get"
+            :columns="columns"
             @cancel="showPicker = false"
             @confirm="onConfirm"
             @change="onChange"
@@ -28,43 +28,38 @@
         </van-popup>
       </van-row>
 
-
-      
-
-
       <van-row>
         <van-cell-group>
-          <van-field :value="this.ContractName" label="项目名称" disabled/>
+          <van-field required :value="this.ContractName" label="项目名称" disabled />
         </van-cell-group>
       </van-row>
     </div>
 
-
-       <van-row>
-        <van-field
+    <van-row>
+      <van-field
         required
-          readonly
-          clickable
-          label="任务阶段"
-          :value="TaskStage"
-          placeholder="选择任务阶段"
-          @click="showTaskStage = true"
+        readonly
+        clickable
+        label="任务阶段"
+        :value="TaskStage"
+        placeholder="选择任务阶段"
+        @click="showTaskStage = true"
+      />
+      <van-popup v-model="showTaskStage" position="bottom">
+        <van-picker
+          show-toolbar
+          :columns="Taskstagecolumns"
+          @cancel="showTaskStage = false"
+          @confirm="onConfirmTaskStage"
         />
-        <van-popup v-model="showTaskStage" position="bottom">
-          <van-picker
-            show-toolbar
-            :columns="columnsss"
-            @cancel="showTaskStage = false"
-            @confirm="onConfirmTaskStage"
-          
-          />
-        </van-popup>
-      </van-row>
+      </van-popup>
+    </van-row>
 
     <van-row>
       <van-cell-group>
         <van-field
           label="任务内容"
+          required
           border
           v-model="MissionContent"
           type="textarea"
@@ -103,25 +98,28 @@
         @click="showendtime = true"
       />
       <van-popup v-model="showendtime" position="bottom">
-        <van-datetime-picker v-model="currentDateendtime" 
-        
-         
-        type="datetime" @confirm="OnConfirmendtime"
-         @cancel="Oncancelendtime"/>
+        <van-datetime-picker
+          v-model="currentDateendtime"
+          type="datetime"
+          @confirm="OnConfirmendtime"
+          @cancel="Oncancelendtime"
+        />
       </van-popup>
     </van-row>
 
-     <van-row>
-        <van-col span="6" class="colcontent">
-         <span class="tabtext"> 人员</span>
-       </van-col>
-       <van-col span="4" class="colcontent">
-         <van-icon class="tabicon" name="manager-o"/>
-       </van-col>
+    <van-row>
+      <van-col span="6" class="colcontent">
+        <span class="tabtext">人员</span>
+      </van-col>
+      <van-col span="4" class="colcontent">
+        <van-icon class="tabicon" name="manager-o" />
+      </van-col>
     </van-row>
 
-    <van-row  slot="footer">
-      <van-col span="24" class="colcontent"> <van-button  class="buttonsubmit" size="small" type="primary">提交</van-button></van-col>  
+    <van-row slot="footer">
+      <van-col span="24" class="colcontent">
+        <van-button class="buttonsubmit" size="small" type="primary" @click="OnSubmit">提交</van-button>
+      </van-col>
     </van-row>
     <!-- 底部组件 -->
     <!-- <MissionAddTabFooter/> -->
@@ -140,7 +138,7 @@ const citys = {
 // {
 //   {id:"",name:""}
 // }
-
+import { GetContrList, GetstageByContIdList, CreatedTasks } from "@/api/Mission";
 export default {
   // components: {
   //   MissionAddTabFooter: () => import("./MissionAddTabFooter")
@@ -150,74 +148,227 @@ export default {
       MissionContent: "",
       ContractNo: "",
       showPicker: false,
-      showTaskStage:false,
+      showTaskStage: false,
       showstarttime: false,
       showendtime: false,
-      ContractName: "",
-      TaskStage:'',//任务阶段
-       currentDatestarttime: new Date(),
-       currentDateendtime: new Date(),
-       StartTime:'',
-       EndTime:'',
-       columnsss:["阶段一","阶段二","阶段三"],
-       columns: [
-        {
-         
-          values: Object.keys(citys),
-          //values: citys[0].id,
-          className: "column1"
-        },
-        {
-          //values: citys[0][0].name,
-          values: citys['HT20190617'],
-          className: "column2",
-          defaultIndex: 2
-        }
-      ]
+      ContractName: "", //项目名称
+      Taskname: "", //任务名称
+      TaskStage: "", //任务阶段
+      currentDatestarttime: new Date(), //开始时间
+      currentDateendtime: new Date(), //接收时间
+      StartTime: "", //显示在UI的开始时间
+      EndTime: "", //显示在UI的结束时间
+      columns: [], //
+      cols: {}, //合同编号的对象数组数据
+      contractList: [], //用于记录合同的数据
+      Taskstagecolumns: [], //任务阶段
+      TaskstagecolumnsList: [] //记录任务阶段的数据
     };
   },
-  created(){
-   
-
-      this.GetData()
-    
+  created() {
+    this.GetContrListData();
   },
   methods: {
+    //选择合同编号列表
+    GetContrListData() {
+      GetContrList()
+        .then(res => {
+          var data = res.data.body.contractList;
+          this.contractList = [];
+          this.contractList = data;
+          console.log(data);
+          this.columns = [];
+          data.forEach(e => {
+            this.cols[e.number] = [e.name];
+          });
 
-    GetData(){
+          var key = Object.keys(this.cols);
+          this.columns.push(
+            { values: Object.keys(this.cols), className: "contract" },
+            { values: this.cols[key[0]], className: "project" }
+          );
+        })
+        .catch(err => {
+          alert(err);
+        });
 
- 
-      this.$store.dispatch('mission/GetContrListData')
-
-      console.log( this.$store)
-      
-      var data=this.$store.state.mission.contractList
-
+      // this.$store.dispatch('mission/GetContrListData')
+      // console.log( this.$store)
+      // var data=this.$store.state.mission.contractList
       //console.log(data)
-
-
-       
     },
 
+    // 根据选择的合同编码取ID
+    GetcontractListBycontractId(projectname) {
+      const contractId = this.contractList.find(e => {
+        return e.number === projectname;
+      });
+      return contractId.id;
+    },
 
-    
+    // 任务阶段名称去值
+    GetTaskstageBystageId(TaskStage) {
+      const data = this.TaskstagecolumnsList.find(e => {
+        return e.name === TaskStage;
+      });
+      return data.id;
+    },
+
+    //选择任务阶段列表
+    GetTaskstageData(projectname) {
+      var params = {
+        contractId: this.GetcontractListBycontractId(projectname)
+      };
+
+      GetstageByContIdList(params)
+        .then(res => {
+          this.Taskstagecolumns = [];
+          this.TaskstagecolumnsList = [];
+          var data = res.data.body.stageList;
+          this.TaskstagecolumnsList = data;
+          data.forEach(e => {
+            this.Taskstagecolumns.push(e.name);
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    //钉钉的提示接口
+    DDApiAert(message) {
+      dd.device.notification.alert({
+        message: message,
+        title: "提示", //可传空
+        buttonName: "确定",
+        onSuccess: function() {
+          //onSuccess将在点击button之后回调
+          /*回调*/
+        },
+        onFail: function(err) {}
+      });
+    },
+
+    //验证是否为空
+    verification() {
+      if (!(!!this.Taskname)) {
+        //this.DDApiAert("任务名称不能为空")
+
+        alert("任务名称不能为空");
+
+        return true;
+      } else if (!(!!this.TaskStage)) {
+        // this.DDApiAert("任务阶段不能为空")
+        alert("任务阶段不能为空");
+        return true;
+      } else if (!!!this.MissionContent) {
+        // this.DDApiAert("任务内容不能为空")
+        alert("任务内容不能为空");
+        return true;
+      } else if (!!!this.ContractNo) {
+        //this.DDApiAert("合同编号不能为空")
+        alert("合同编号不能为空");
+        return true;
+      }
+      //  else if (!!!this.ContractName) {
+      //   //this.DDApiAert("项目名称不能为空")
+      //   alert("项目名称不能为空");
+      //   return;
+      // }
+    },
+
+    //提交的方法
+    OnSubmit() {
+      var _this = this;
+
+      // if (_this.verification() === true) {
+      //   return;
+      // } //验证是否为空的方法
+
+      // var params = {
+      //   Tasks: {
+      //     name: _this.Taskname,
+      //     status: 0,
+      //     contract: _this.GetcontractListBycontractId(_this.ContractNo),
+      //     stage: _this.GetTaskstageBystageId(_this.TaskStage),
+      //     isMain: 0,
+      //     principalId: "65e44167f59b43ddaa098dc691f52a48",
+      //     remarks: _this.MissionContent,
+      //     appointTime: _this.StartTime,
+      //     requireTime: _this.EndTime
+      //   }
+      // };
+
+      // var params=[{tasks:{
+      //   name:_this.Taskname,
+      //   status:0,
+      //   contract:_this.GetcontractListBycontractId(_this.ContractNo),
+      //   stage:_this.GetTaskstageBystageId(_this.TaskStage),
+      //   isMain:0,
+      //   principalId:"65e44167f59b43ddaa098dc691f52a48",
+      //   remarks:_this.MissionContent,
+      //   appointTime:_this.StartTime,
+      //   requireTime:_this.EndTime
+      //   }   }]
+
+      //  var params = {
+      
+      //     name: _this.Taskname,
+      //     status: 0,
+      //     contract: _this.GetcontractListBycontractId(_this.ContractNo),
+      //     stage: _this.GetTaskstageBystageId(_this.TaskStage),
+      //     isMain: 0,
+      //     principalId: "65e44167f59b43ddaa098dc691f52a48",
+      //     remarks: _this.MissionContent,
+      //     appointTime: _this.StartTime,
+      //     requireTime: _this.EndTime
+      
+      // };
+
+        var params = {
+        
+             id:'1',
+             name:'32432' 
+                
+        }
+
+      console.log( JSON.parse(JSON.stringify(params)) );
+
+      CreatedTasks(params)
+        .then(res => {
+          alert(res.data.msg);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      // Created(params).then(res=>{
+
+      //   alert(res.data.msg)
+
+      // }).catch(err=>{
+      //   alert(err)
+      // })
+    },
+
     //合同编号
     onConfirm(value) {
       this.ContractNo = value[0];
       this.showPicker = false;
       this.ContractName = value[1];
+      this.GetTaskstageData(value[0]);
     },
 
     //项目阶段的回调方法
-    onConfirmTaskStage(value){
-      this.TaskStage=value
+    onConfirmTaskStage(value) {
+      this.TaskStage = value;
       this.showTaskStage = false;
     },
 
     // 开始时间的确定关闭
     OnConfirmstarttime(value) {
       this.showstarttime = false;
-      this.StartTime=this.$moment(value).format('YYYY-MM-DD');
+      this.StartTime = this.$moment(value).format("YYYY-MM-DD");
     },
     // 开始时间的取消关闭
     Oncancelstarttime() {
@@ -226,68 +377,65 @@ export default {
     //结束时间的确定关闭
     OnConfirmendtime(value) {
       this.showendtime = false;
-      this.EndTime=this.$moment(value).format('YYYY-MM-DD');
+      this.EndTime = this.$moment(value).format("YYYY-MM-DD");
     },
     //结束时间的取消关闭
     Oncancelendtime() {
       this.showendtime = false;
     },
 
-   //合同编号 联动选择 项目名称
-     onChange(picker, values) {  
-      picker.setColumnValues(1, citys[values[0]]);
-
+    //合同编号 联动选择 项目名称
+    onChange(picker, values) {
+      picker.setColumnValues(1, this.cols[values[0]]);
     }
   },
-  computed:{
-
-     get(){
-
-      const result=[]
-
-      // const data=[
-      // {id:"1",contract:"HT20190617",project:"HT1701xxxx项目"},
-      // {id:"2",contract:"HT20190618",project:"HT1801xxxx项目"},
-      // {id:"3",contract:"HT20190619",project:"HT1901xxxx项目"}]
-
-     const data=[
-      {id:"1",contract:"54c0881bd1994bdf96961c8204141c1f",project:"提交的合同审批"},
-      {id:"2",contract:"06d39f13701046ef94c398b4d28948c7",project:"测试"},
-     ]
-
-
-     const cols={}
-      data.forEach(e=>{  
-         cols[e.contract]=[e.project] 
-      })
-
-    var key=Object.keys(cols)
-      
-    result.push({values:Object.keys(cols) ,className:'contract'},{values:cols[key[0]],className:'project'})
-      
-     return   result;
-
-
+  computed: {
+    // get() {
+    //   const result = [];
+    //   // const data=[
+    //   // {id:"1",contract:"HT20190617",project:"HT1701xxxx项目"},
+    //   // {id:"2",contract:"HT20190618",project:"HT1801xxxx项目"},
+    //   // {id:"3",contract:"HT20190619",project:"HT1901xxxx项目"}]
+    //   const data = [
+    //     {
+    //       id: "1",
+    //       contract: "54c0881bd1994bdf96961c8204141c1f",
+    //       project: "提交的合同审批"
+    //     },
+    //     {
+    //       id: "2",
+    //       contract: "06d39f13701046ef94c398b4d28948c7",
+    //       project: "测试"
+    //     }
+    //   ];
+    //   const cols = {};
+    //   data.forEach(e => {
+    //     cols[e.contract] = [e.project];
+    //   });
+    //   var key = Object.keys(cols);
+    //   result.push(
+    //     { values: Object.keys(cols), className: "contract" },
+    //     { values: cols[key[0]], className: "project" }
+    //   );
+    //   return result;
+    // }
   }
-
-  }
- 
 };
 </script>
 
 <style  scoped>
-.buttonsubmit{
+.buttonsubmit {
   width: 100%;
 }
-.tabtext{
-   font-size: 1rem;
-   line-height: 2
+.tabtext {
+  font-size: 1rem;
+  line-height: 2;
 }
 .tabicon {
-  font-size: 2.0rem;
+  font-size: 2rem;
 }
-.colcontent{
-  text-align: center
+.colcontent {
+  text-align: center;
 }
 .ProjectItem {
   font-size: 0.8rem;
