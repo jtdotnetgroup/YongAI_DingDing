@@ -78,73 +78,73 @@ Random.extend({
 // }
 
 
-//汇报记录的API
-const ReportingrecordList=()=>{
-    const data=[]
-    const MissionContentCount=Random.integer(5,10)
-    for (let index = 0; index < MissionContentCount; index++) {
-        let report={
-            reportTime:Random.datetime('yyyy-MM-dd'),
-            reportContent:Random.cparagraph(2, 3)
-            // reportContent:"XXXXX"+Random.string('123456789', 2)+"项目",
-        }
-        data.push(report)
-   }
-   return data
+// //汇报记录的API
+// const ReportingrecordList=()=>{
+//     const data=[]
+//     const MissionContentCount=Random.integer(5,10)
+//     for (let index = 0; index < MissionContentCount; index++) {
+//         let report={
+//             reportTime:Random.datetime('yyyy-MM-dd'),
+//             reportContent:Random.cparagraph(2, 3)
+//             // reportContent:"XXXXX"+Random.string('123456789', 2)+"项目",
+//         }
+//         data.push(report)
+//    }
+//    return data
 
-}
+// }
 
-// 任务列表数据
-const MissionListData = () => {
-    const data = []
-    const count=Random.integer(10,20)
+// // 任务列表数据
+// const MissionListData = () => {
+//     const data = []
+//     const count=Random.integer(10,20)
    
-    for (let index = 0; index < count; index++) {
-        let row={
-             // 地址
-            addr: Random.city(true) + 'XXX敬老院',
-            missionName:"任务"+Random.string('123456789', 1),
-            missionTime:Random.datetime('yyyy-MM-dd'),
-              // 是否完成状态
-            finish: Random.boolean(),
-            ProjectNo:"HT"+Random.string('123456789', 5),
-            ProjectName:"XXXXX"+Random.string('123456789', 2)+"项目",
-             //委派人员
-            delegating:Random.boolean(),
+//     for (let index = 0; index < count; index++) {
+//         let row={
+//              // 地址
+//             addr: Random.city(true) + 'XXX敬老院',
+//             missionName:"任务"+Random.string('123456789', 1),
+//             missionTime:Random.datetime('yyyy-MM-dd'),
+//               // 是否完成状态
+//             finish: Random.boolean(),
+//             ProjectNo:"HT"+Random.string('123456789', 5),
+//             ProjectName:"XXXXX"+Random.string('123456789', 2)+"项目",
+//              //委派人员
+//             delegating:Random.boolean(),
            
-        }
+//         }
       
-        data.push(row)
-    }
+//         data.push(row)
+//     }
 
-    return data
-}
+//     return data
+// }
 
 
 
-//提醒我
-const InformationList=()=>{
-    const data = []
-    const count=Random.integer(5,10)
+// //提醒我
+// const InformationList=()=>{
+//     const data = []
+//     const count=Random.integer(5,10)
    
-for (let index = 0; index < count; index++) {
+// for (let index = 0; index < count; index++) {
 
-   let row={
-    addr: Random.city(true) + 'XXX敬老院',
-    expire:Random.datetime('yyyy-MM-dd'),
-    money: Random.string('123456789', 4), 
-    project:"XXX"+Random.string('123456789', 4)+"项目",
-    TypeName: Random.missionType(), 
-   }
+//    let row={
+//     addr: Random.city(true) + 'XXX敬老院',
+//     expire:Random.datetime('yyyy-MM-dd'),
+//     money: Random.string('123456789', 4), 
+//     project:"XXX"+Random.string('123456789', 4)+"项目",
+//     TypeName: Random.missionType(), 
+//    }
 
-   data.push(row)
-}
-   return data
-}
+//    data.push(row)
+// }
+//    return data
+// }
 
 
 //  Mock.mock('/Project/GetProjectList', 'get', ProjectListData)
-Mock.mock('/Mission/GetMissionList','get',MissionListData)
-Mock.mock('/Information/GetInformationList','get',InformationList)
-Mock.mock('/Mission/GetReportingrecordList','get',ReportingrecordList)
+// Mock.mock('/Mission/GetMissionList','get',MissionListData)
+// Mock.mock('/Information/GetInformationList','get',InformationList)
+// Mock.mock('/Mission/GetReportingrecordList','get',ReportingrecordList)
 //新建任务 编辑任务 post请求

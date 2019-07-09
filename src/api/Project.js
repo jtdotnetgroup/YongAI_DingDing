@@ -22,3 +22,12 @@ export function GetProjectList(params){
         data:params
     })
 }
+
+//项目管理的项目阶段 查询
+export function GetStageList(params){
+    return request({
+        url:'/f/dingtalk/bdstage/dt/bdStageList',
+        method:'get',     
+        params:params
+    })
+}

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { GetProjectList } from "@/api/Project";
+import { GetProjectList, GetAccessToken} from "@/api/Project";
 import ProjectItem from "./ProjectItem";
 import * as dd from "dingtalk-jsapi";
 export default {
@@ -36,7 +36,7 @@ export default {
     };
   },
   created() {
-    this.$store.commit("pageNo", 1);
+  
 
     this._LoadData();
   },
@@ -45,51 +45,82 @@ export default {
 
         var _this = this;
 
-        // alert("Token:"+_this.$store.state.asscesstoken+","+"userId:"+ _this.$store.state.userId);
+
+
+      _this.$store.commit("SET_ASSCESSTOKEN", "96fdf7e0d88f379e8989d8d1f0666af8");
+      _this.$store.commit("SET_USERID", "180623424221394323");
+      _this.$store.commit("SET_PAGENO", 1);//页码
+      _this.GetData()
     
-      if (!(!!_this.$store.state.asscesstoken && !!_this.$store.state.userId)) {
-        alert('不存在token时')
-         _this.$store.dispatch("GetCode").then(() => {
+      // if (!(!!_this.$store.state.asscesstoken && !!_this.$store.state.userId)) {
+           //alert('不存在token时')
+      //     dd.ready(() => {
+      //     dd.runtime.permission.requestAuthCode({
+      //     corpId: _this.$store.state.CorpId,
+      //     onSuccess: function (result) {
+      //       //alert(result.code)
+      //        _this.$store.commit("SET_CODE", result.code); //赋值 把值存在 state
+      //       //获取token 的api
+      //       GetAccessToken()
+      //         .then(res => {
+      //          // let { accessToken, userId } = res;
 
-         _this.GetData()
+      //         // alert('token:'+ res.data.body.accessToken+'userId:'+res.data.body.userId)
 
-        });
+      //          _this.$store.commit("SET_ASSCESSTOKEN", res.data.body.accessToken);
+      //          _this.$store.commit("SET_USERID", res.data.body.userId);
+      //          _this.$store.commit("SET_PAGENO", 1);//页码
+              
+      //          _this.GetData()
+      //         })
+      //         .catch(err => {
+      //           alert(err);
+      //          // reject()
+      //       });
+      //     },
+      //     onFail: function (err) {
+      //       alert(err);
+      //     }
+      //   });
+      // });
 
-      }else{
-        alert('存在token时')
-        _this.GetData()
-      }
+    
+      // }else{
+      //   // alert('存在token时')
+      //   // _this.GetData()
+      // }
       
     },
 
 
     GetData(){
         var _this = this;
-       var params = {
+        var params = {
             status: 1
           };
           GetProjectList(params)
             .then(res => {
+
               switch (res.data.body.code) {
-                case 1:
-                  alert(res);
-                  _this.DDApiAert(res);
+                case "1":
+                  console.log(res)
+                  //_this.DDApiAert(res);
                   _this.projects = res.data.body.contractList;
                   break;
-                case 2:
+                case "2":
                   _this.DDApiAert("请求的用户不存在");
                   break;
-                case 3:
+                case "3":
                   _this.DDApiAert("请求的用户禁用状态");
                   break;
-                case 4:
+                case "4":
                   _this.DDApiAert("为请求的钉钉的Token失效，重新登录");
                   break;
 
                 default:
                   break;
               }
-            })
+             })
             .catch(err => {
               alert(err)
               //console.log(err);
@@ -112,11 +143,13 @@ export default {
       });
     }
   },
+
+  
   computed: {
     projectList() {
       if (this.active === 0) {
         return this.projects.filter(e => {
-          return e.status === 2;
+          return e.status === 0;
         });
       } else {
         return this.projects;

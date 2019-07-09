@@ -1,5 +1,8 @@
 <template>
   <van-panel class="ProjectItem" :title="Mission.addr">
+
+
+  
     <van-row class="projectHeader" slot="header">
       <van-col span="20">{{Mission.addr}}</van-col>
       <van-col class="projectStage" span="4">
@@ -12,7 +15,7 @@
         <van-col span="5">
           <span style="color:blue">任务名称</span>
         </van-col>
-        <van-col span="15">{{Mission.missionName}}</van-col>
+        <van-col span="15">{{Mission.name}}</van-col>
         <div @click="ItmeClick">
           <van-col span="4">
             <van-icon class="editicon" name="edit"/>
@@ -24,7 +27,7 @@
         <van-col span="5">
           <span style="color:blue">任务时间</span>
         </van-col>
-        <van-col span="19">{{Mission.missionTime}}</van-col>
+        <van-col span="19">{{Mission.finishTime}}</van-col>
       </van-row>
     </van-row>
   </van-panel>

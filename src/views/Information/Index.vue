@@ -37,7 +37,7 @@ export default {
   created() {
 
        
-     this._LoadData();
+   //  this._LoadData();
       
   },
   methods: {

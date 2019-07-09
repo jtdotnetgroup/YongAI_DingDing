@@ -32,7 +32,8 @@ import{
   CellGroup,
   Picker,
   Popup,
-  DatetimePicker  
+  DatetimePicker,  
+  Loading
 } from 'vant'
 
 Vue.use(Lazyload)
@@ -53,6 +54,7 @@ Vue.use(Lazyload)
 .use(Picker)
 .use(Popup)
 .use(DatetimePicker)
+.use(Loading)
 
 
 // dd.config({

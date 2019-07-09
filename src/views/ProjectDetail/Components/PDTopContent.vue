@@ -7,7 +7,7 @@
       </van-row>
       <van-row>
         <van-col span="4">签约时间</van-col>
-        <van-col span="20">{{projecDate.updateTime}}</van-col>
+        <van-col span="20">{{projecDate.date}}</van-col>
       </van-row>
     </template>
     <hr />
@@ -29,8 +29,8 @@
 
       <van-row class="projectbottom">
         <van-col span="4">主联系人</van-col>
-        <van-col span="6">{{projecDate.contacts.name}}</van-col>
-        <van-col span="10">{{projecDate.contacts.pose}}</van-col>
+        <van-col span="6">{{projecDate.emplName}}</van-col>
+        <van-col span="10">{{projecDate.pose}}</van-col>
       </van-row>
 
       <van-row>
@@ -38,10 +38,10 @@
           <span class="spanPhoneAndadd">联系方式</span>
         </van-col>
         <van-col span="16">
-          <span class="spanPhoneAndadd">{{projecDate.contacts.phone}}</span>
+          <span class="spanPhoneAndadd">{{projecDate.mobile}}</span>
         </van-col>
         <van-col span="3" class="rowcol">
-          <a class="tel" :href="'tel:'+projecDate.contacts.phone">
+          <a class="tel" :href="'tel:'+projecDate.mobile">
             <van-icon class="iconClass" name="phone-circle-o" />
           </a>
         </van-col>
@@ -56,7 +56,7 @@ export default {
   name: "pdtop",
   data() {
     return {
-      //projecDate:this.$route.params.projectItem
+     //projecDate:this.$store.state.project.activeProject
     };
   },
   //生命周期函数
@@ -83,7 +83,8 @@ export default {
 
   computed: {
     projecDate() {
-      return this.$store.state.project.activeProject;
+      //return this.$store.state.project.activeProject;
+      return JSON.parse(sessionStorage.getItem("activeProject"));
     }
   }
 };

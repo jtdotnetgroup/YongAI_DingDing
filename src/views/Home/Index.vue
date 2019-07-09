@@ -74,17 +74,21 @@ export default {
 
 
     OnClick() {
-        dd.runtime.permission.requestAuthCode({
-          corpId: this.$store.state.CorpId,
-          onSuccess: function(result) {
-            alert(JSON.stringify(result));
-            // _this.OnSelect(result.code)
-            this.GetCode()
-          },
-          onFail: function(err) {
-            alert("失败");
-          }
-        });
+
+   
+       this.$store.dispatch("GetCode")
+
+        // dd.runtime.permission.requestAuthCode({
+        //   corpId: this.$store.state.CorpId,
+        //   onSuccess: function(result) {
+        //     alert(JSON.stringify(result));
+        //     // _this.OnSelect(result.code)
+        //     this.GetCode()
+        //   },
+        //   onFail: function(err) {
+        //     alert("失败");
+        //   }
+        // });
     }
   }
 };

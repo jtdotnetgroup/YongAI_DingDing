@@ -3,11 +3,12 @@
     <div slot="header">
       <van-row>
         <van-cell-group>
-          <van-field value="医疗设备" label="任务名" disabled/>
+          <van-field  label="任务名" />
         </van-cell-group>
       </van-row>
       <van-row>
         <van-field
+        required
           readonly
           clickable
           label="合同编码"
@@ -41,6 +42,7 @@
 
        <van-row>
         <van-field
+        required
           readonly
           clickable
           label="任务阶段"
@@ -175,34 +177,29 @@ export default {
     };
   },
   created(){
-    // const citys = [{id:"HT20190617",name:"HT1701xxxx项目"},{id:"HT20190618",name:"HT1801xxxx项目"}];
-    // console.log( citys[0].id )
+   
 
-       //// const citys = {
-       ////   HT20190617: ["HT1701xxxx项目"],
-       ////   HT20190618: ["HT1801xxxx项目"],
-       ////   HT20190619: ["HT1901xxxx项目"]
-       //// };
-
-      const result=[]
-
-      const data=[
-      {id:"1",contract:"HT20190617",project:"HT1701xxxx项目"},
-      {id:"2",contract:"HT20190618",project:"HT1801xxxx项目"},
-      {id:"3",contract:"HT20190619",project:"HT1901xxxx项目"}]
-
-
-     const cols={}
-      var datacolumns=[];
-      data.forEach(e=>{
-         cols[e.contract]=[e.project]    
-      })
-      
-      result.push({values:Object.keys(cols) ,className:'contract'},{values:cols[Object.keys(cols)],className:'project'})
-      console.log(result)
+      this.GetData()
     
   },
   methods: {
+
+    GetData(){
+
+ 
+      this.$store.dispatch('mission/GetContrListData')
+
+      console.log( this.$store)
+      
+      var data=this.$store.state.mission.contractList
+
+      //console.log(data)
+
+
+       
+    },
+
+
     
     //合同编号
     onConfirm(value) {
@@ -248,10 +245,15 @@ export default {
 
       const result=[]
 
-      const data=[
-      {id:"1",contract:"HT20190617",project:"HT1701xxxx项目"},
-      {id:"2",contract:"HT20190618",project:"HT1801xxxx项目"},
-      {id:"3",contract:"HT20190619",project:"HT1901xxxx项目"}]
+      // const data=[
+      // {id:"1",contract:"HT20190617",project:"HT1701xxxx项目"},
+      // {id:"2",contract:"HT20190618",project:"HT1801xxxx项目"},
+      // {id:"3",contract:"HT20190619",project:"HT1901xxxx项目"}]
+
+     const data=[
+      {id:"1",contract:"54c0881bd1994bdf96961c8204141c1f",project:"提交的合同审批"},
+      {id:"2",contract:"06d39f13701046ef94c398b4d28948c7",project:"测试"},
+     ]
 
 
      const cols={}
