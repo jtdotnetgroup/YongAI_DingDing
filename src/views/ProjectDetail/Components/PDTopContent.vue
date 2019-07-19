@@ -1,9 +1,9 @@
 <template>
-  <van-panel class="ProjectItem" :title="projecDate.addr" :status="projecDate.stage">
+  <van-panel class="ProjectItem" :title="projecDate.name" >
     <template slot="header">
       <van-row class="projectHeader">
-        <van-col span="20">{{projecDate.addr}}</van-col>
-        <van-col class="projectStage" span="4">{{projecDate.stage}}</van-col>
+        <van-col span="20">{{projecDate.name}}</van-col>
+        <!-- <van-col class="projectStage" span="4">{{projecDate.stage}}</van-col> -->
       </van-row>
       <van-row>
         <van-col span="4">签约时间</van-col>
@@ -12,7 +12,7 @@
     </template>
     <hr />
 
-    <van-row>
+    <!-- <van-row>
       <van-row class="projectbottom">
         <van-col span="4">
           <span class="spanPhoneAndadd">客户地址</span>
@@ -25,7 +25,7 @@
             <van-icon class="iconAddr" name="location-o" />
           </div>
         </van-col>
-      </van-row>
+      </van-row> -->
 
       <van-row class="projectbottom">
         <van-col span="4">主联系人</van-col>
@@ -46,7 +46,7 @@
           </a>
         </van-col>
       </van-row>
-    </van-row>
+    <!-- </van-row> -->
     <hr />
   </van-panel>
 </template>
@@ -64,21 +64,7 @@ export default {
     // console.log(this.$route.params.projectItem);
   },
   methods: {
-    AddrClick() {     
-      dd.ready(function() {
-        dd.device.geolocation.get({
-          targetAccuracy: 200,
-          coordinate: 1,
-          withReGeocode: true,
-          useCache: true, //默认是true，如果需要频繁获取地理位置，请设置false
-          onSuccess: function(result) {
-            alert("点击");
-            alert(JSON.stringify(result));
-          },
-          onFail: function(err) {}
-        });
-      });
-    }
+   
   },
 
   computed: {

@@ -25,7 +25,6 @@ export default {
     //     dd.runtime.permission.requestAuthCode({
     //       corpId: this.$store.state.CorpId,
     //       onSuccess: function(result) {
-            
     //         _this.$store.commit("SET_CODE", result.code); //赋值 把值存在 state
     //         _this.GetAccessTokenUserid();
     //       },

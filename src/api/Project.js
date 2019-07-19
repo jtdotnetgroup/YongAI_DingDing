@@ -8,12 +8,7 @@ import {request} from '../lib/request'
 //     })
 // }
 
-export function GetAccessToken(){
-    return request({
-        url:'/f/dingtalk/index/getAccessToken',
-        method:'post',     
-    })
-}
+
 
 export function GetProjectList(params){
     return request({
@@ -29,5 +24,16 @@ export function GetStageList(params){
         url:'/f/dingtalk/bdstage/dt/bdStageList',
         method:'get',     
         params:params
+    })
+}
+
+
+//保存上传文件
+export function ProjectSave(params){
+    return request({
+        url:"/f/dingtalk/bdstage/dt/upload",
+        method:'post',    
+        headers: {"Content-Type": "multipart/form-data"}, 
+        data:params
     })
 }

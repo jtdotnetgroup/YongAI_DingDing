@@ -5,6 +5,10 @@
         :rightIcon="rightIcon"
         :rightPath="rightPath"
     />
+    
+    <!-- 加载动画效果 -->
+  <Loading  :styleObject="styleObject" />
+
     <div id="middle">
        <keep-alive >    
          <!-- 组件缓存，用于缓存组件的意思 -->
@@ -24,6 +28,9 @@
       <router-view v-if="!this.$route.meta.keepalive"></router-view>
       </transition>
     </div>
+    
+  
+    
     <TabBar v-if="tabbar" id="tabbar" :activetab="activetab"/>
   </div>
 </template>
@@ -34,7 +41,9 @@ export default {
   name: "layout",
   components: {
     NavBar: () => import("../components/NavBar"),
-    TabBar: () => import("../components/TabBar")
+    TabBar: () => import("../components/TabBar"),
+    Loading:()=>import("@/components/Loading")
+
   },
   props: {
     tabbar: {
@@ -60,6 +69,10 @@ export default {
     },
     activetab:{
       type:String
+    },
+    styleObject:{
+      type:Object
+
     }
   }
 };
@@ -68,6 +81,7 @@ export default {
 <style lang="stylus">
 #middle {
   padding: 25px 0 25px 0
+  
 }
 #navbar{
   z-index 999 !important;

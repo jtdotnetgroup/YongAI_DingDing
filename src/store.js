@@ -2,10 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import project from './store/project'
 import mission from './store/mission'
-import { GetAccessToken } from "@/api/Project";
+import {GetAccessToken} from "@/api/ddjsapi";
 
 import * as dd from "dingtalk-jsapi";
-import { resolve } from 'path';
+// import { reject } from 'q';
 //import { reject } from 'q';
 
 Vue.use(Vuex)
@@ -17,7 +17,10 @@ export default new Vuex.Store({
     asscesstoken: '',
     code: '',
     userId: '',
-    taskname:''
+    taskname:'',
+    url:"http://66d0ec59.cpolar.io/",
+    agentId:"273268283",   //微应用的ID
+    loading:false
   },
   mutations: {
 
@@ -44,43 +47,61 @@ export default new Vuex.Store({
     //任务管理的项目名称
     SET_TASKNAME:(state,payload)=>{
       state.taskname = payload
+    },
+    
+    SET_LOADING:(state)=>{
+       state.loading=!state.loading
+     //state.loading=true
     }
-
 
   },
   actions: {
 
-    GetCode({ commit,state }) {
-
-      dd.ready(() => {
+     GetCode({ commit,state }) {
+       return new Promise((resolve, reject)=>{
+       dd.ready(() => {
         dd.runtime.permission.requestAuthCode({
           corpId: state.CorpId,
           onSuccess: function (result) {
-            alert(result.code)
+            //alert(result.code)
             commit("SET_CODE", result.code); //赋值 把值存在 state
-            //获取token 的api
-            GetAccessToken()
-              .then(res => {
-                let { accessToken, userId } = res;
-                commit("SET_ASSCESSTOKEN", accessToken);
-                commit("SET_USERID", userId);
-              
-              })
-              .catch(err => {
-                alert(err);
-               // reject()
-            });
+            return resolve() 
           },
           onFail: function (err) {
             alert(err);
+            return reject()
           }
         });
       });
-      resolve()
+    
+    })
+     
 
     },
 
-  
+    //获取accessToken 的方法
+     GetAccessTokenDate({ commit}){
+
+      // alert("先执行Token方法")
+       return new Promise((resolve, reject)=>{
+       GetAccessToken()
+      .then(res => {
+        let { accessToken, userId } = res.data.body;
+        //alert("accessToken"+accessToken)
+        commit("SET_ASSCESSTOKEN", accessToken);
+        commit("SET_USERID", userId);  
+        commit("SET_PAGENO", "1");//页码        
+        return resolve();
+       
+      })
+      .catch(err => {
+        alert(err);
+        return reject()
+      // return Promise.resolve()
+    });
+  })
+  }
+
   },
   modules: {
     project,

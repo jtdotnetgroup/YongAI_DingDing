@@ -2,7 +2,7 @@
   <van-tabs v-model="active">
     <van-tab title="项目阶段">
       
-      <PDItemSteps />
+      <PDItemSteps    />
          
     </van-tab>
     <!-- <van-tab title="项目团队">内容 2</van-tab>

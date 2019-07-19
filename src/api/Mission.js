@@ -40,19 +40,15 @@ export function GetstageByContIdList(params) {
     })
 
 }
-			
-						
-						
-						
-						
-						
-	
+
+
+
 //保存任务的方法					
 export function CreatedTasks(params) {
     return request({
         url: "/f/dingtalk/tasks/dt/taskSave",
-        method: "post",    
-        headers:{"Content-Type":"application/json; charset=utf-8"},
+        method: "post",
+        headers: {"Content-Type":"application/json;charset=utf-8"},
         data: params
     })
 
@@ -60,34 +56,45 @@ export function CreatedTasks(params) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //汇报记录
 export function GetReportingrecordList(params) {
     return request({
-        url: "/Mission/GetReportingrecordList",
+        url: "/f/dingtalk/taskreport/list",
         method: 'get',
-        params
+        params:params
+
     })
 
 }
+
+//汇报管理
+export function TaskreportSave(params) {
+    return request({
+        url: "/f/dingtalk/taskreport/save",
+        method: 'post',
+        headers: {"Content-Type": "multipart/form-data"},
+        data: params
+
+    })
+}
+
+//上传附件
+export function TaskUploadSave(params) {
+    return request({
+        url: "/f/dingtalk/reportfile/upload",
+        method: 'post',
+        headers: {"Content-Type": "multipart/form-data"},
+        data: params
+    })
+}
+
+
+//根据当前钉钉用户ID获取数据库的ID
+export function GetoriginatTasksUser(params) {
+    return request({
+        url: "/f/dingtalk/tasks/dt/originatTasksUser",
+        method: 'get',
+        params: params
+    })
+}
+

@@ -4,7 +4,6 @@
       <van-col span="19">{{Project.custName}}</van-col>
       <van-col class="projectStage" span="5">{{Project.stage}}</van-col>
     </van-row>
-
     <van-row class="projectItemContent">
       <van-col span="20">
         <div @click="ItemClick">
@@ -48,16 +47,14 @@
       <van-col span="20">
         <div @click="ItemClick">
           <van-row>
-            <van-col span="24">
+            <van-col span="24" class="emplNameStyle">
               <van-icon name="user-o"/>
               {{'业务员：'+Project.emplName+' '+Project.mobile}}
             </van-col>
-          
           </van-row>
         </div>
       </van-col>
       <van-col span="4"> 
-
           <a class="tel" :href="'tel:'+Project.mobile">          
            <span><van-icon size="35px"  name="phone-circle-o"/></span> 
           </a> 
@@ -97,12 +94,28 @@ export default {
       const dic = {
         years: "年",
         "a year": "年",
+        "a day": "1天",
         months: " 个月",
         days: "天",
         hours: "小时",
+        "an hour":"1小时",
+        "a minute":"1分钟",
+        "a few seconds":"刚刚",
         minutes: "分钟"
       };
-      let result = this.$moment(this.Project.updateDate).fromNow(true) + " 前";
+      
+      const datatime=this.$moment(this.Project.updateDate).fromNow(true)
+      let result="";
+      
+      if(datatime.indexOf("a few seconds")>=0){
+         result = this.$moment(this.Project.updateDate).fromNow(true)
+      }else{
+         result = this.$moment(this.Project.updateDate).fromNow(true) + " 前";
+      }
+
+    
+
+
       for (var key in dic) {
         result = result.replace(key, dic[key]);
       }
@@ -155,5 +168,8 @@ export default {
   top: -2px;
   background-color: #3487e6; 
   border-radius: 100%
+}
+.emplNameStyle{
+  line-height: 2.3
 }
 </style>

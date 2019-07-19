@@ -11,7 +11,7 @@ export const routes = [
         name: 'home',
         redirect: '/projectlist',
         meta: {},
-        props: { tabbar: true, title: '永爱·项目管理', activetab: 'home' },
+        props: { tabbar: true, title: '永爱·项目管理', activetab: 'home'},
         component: layout,
         children: [
             {
@@ -24,7 +24,7 @@ export const routes = [
     {
         path: '/mission',
         name: 'mission',
-        props: { tabbar: true, title: '永爱·任务管理', rightIcon: 'plus', rightPath: '/MissionAdd', activetab: 'missionList' },
+        props: { tabbar: true, title: '永爱·任务管理', rightIcon: 'plus', rightPath: '/MissionAdd', activetab: 'missionList'  },
         meta: {},
         component: layout,
         children: [
@@ -64,7 +64,7 @@ export const routes = [
         path: '/projectdetails',
         name: 'projectdetails',
         redirect: '/projectdetails/index',
-        props: { tabbar: false, title: '项目详情' },
+        props: { tabbar: false, title: '项目详情' ,},
         component: layout,
         children: [
             {
@@ -78,9 +78,26 @@ export const routes = [
 
     },
     {
+        path: '/PDMaintain',
+        name: 'PDMaintain',
+        redirect: '/PDMaintain/index',
+        props: { tabbar: false, title: '项目阶段维护',rightIcon: 'wap-home',rightPath: '/home' ,},
+        component: layout,
+        children: [
+            {
+                path: '/PDMaintain/index',
+                name: 'PDMaintain',
+                meta:{keepalive:true},
+                component: () => import('../views/ProjectDetail/Components/PDMaintain.vue')
+            }
+
+        ]
+
+    },
+    {
         path: '/MissionAdd',
         name: 'MissionAdd',
-        props: { tabbar: false, title: '新建任务', rightIcon: 'wap-home', rightPath: '/home' },
+        props: { tabbar: false, title: '新建任务', rightIcon: 'wap-home', rightPath: '/home', },
         redirect: '/MissionAdd/index',
         component: layout,
         children: [
@@ -95,7 +112,7 @@ export const routes = [
     {
         path: '/MissionEdit',
         name: 'MissionEdit',
-        props: { tabbar: false, title: '汇报任务', rightIcon: 'wap-home', rightPath: '/home' },
+        props: { tabbar: false, title: '汇报任务', rightIcon: 'wap-home', rightPath: '/home' ,},
         redirect: '/MissionEdit/index',
         component: layout,
         children: [{

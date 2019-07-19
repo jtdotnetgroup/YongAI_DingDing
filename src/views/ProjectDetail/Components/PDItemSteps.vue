@@ -1,6 +1,6 @@
 <template>
-  <van-steps direction="vertical" :active="0" active-color="black">
-    <template v-for="(item,index) in FlowDatas">
+  <van-steps direction="vertical" :active="0" active-color="black"  >
+    <template v-for="(item,index) in FlowDatas"  >
       <van-step :key="index" >
         <van-row class="vanrow">
           <van-col span="24">
@@ -14,36 +14,42 @@
             
           </van-col>
         </van-row>
-        <van-row class="vanrow">
-
+        <van-row class="vanrow"  >
+            
            <template v-if="!!item.tasksList">
-          <van-col span="5">时间计划</van-col>
+             <div @click="OnClickItme(item)">
+          <van-col span="5">计划完成</van-col>
           <van-col span="6" class="vanstepcontent">{{item.endTime}}</van-col>
           
-        
             <van-col span="2">
             <van-icon class="iconcolor" color="red" name="underway"/>
           </van-col>
           <van-col span="8">
-            <span style="color:red">还有{{datedifference(item.endTime,new Date())}}天到期</span>
+            <div v-if="datedifference(item.endTime,new Date())===0">
+            <span style="color:red">{{'已过期'}}</span>
+            </div>
+            <div v-else>
+            <span style="color:red">{{'还有'+datedifference(item.endTime,new Date())+'天到期'}}</span>
+            </div>
           </van-col>
           <van-col span="1">
             <van-icon class="iconcolor" color="red" name="warning-o"/>
           </van-col>
+            </div>
 
           </template>
-
+             
            <template v-else>
-
-         <van-row class="vanrow">
-          <van-col span="6">时间计划</van-col>
+          <div @click="OnClickItme(item)">
+         <van-row class="vanrow"    >
+          <van-col span="6">计划完成</van-col>
           <van-col span="10" class="vanstepcontent">{{item.endTime}}</van-col>
           <van-col span="6">
             <van-icon class="iconcolor" color="green" name="passed"/>
           </van-col>
-        </van-row>
+          </van-row>
      
-
+            </div>
             
            </template>
           
@@ -56,10 +62,18 @@
              <van-col span="18">
           
               <div class="container"  >
-                <div :key="index" v-for="(items,index) in item.tasksList" >           
-                    <div class="divtext"  @click="OnClick(items)">
+                <div :key="index" v-for="(items,index) in item.tasksList" >   
+
+                   <div v-if="items.status==='1'">    
+                    <div class="divtext"  @click="OnClick(item,items)">
                       {{items.name}}            
-                    </div>              
+                    </div>   
+                    </div>       
+                    <div v-else> <!-- 未完成 -->
+                      <div class="divtextunfinished " @click="OnClick(item,items)">
+                      {{items.name}}            
+                    </div>    
+                    </div>        
                 </div>
               </div>
 
@@ -123,7 +137,31 @@ export default {
        }
      return 0;
     },
-    OnClick(item) {
+
+    //汇报记录页面
+    OnClick(item,items) {
+
+      // contractId:_this.MissionDate.contract,		// 合同id
+      //     stageId:_this.MissionDate.stage,	 // 阶段id
+      //     taskId:_this.MissionDate.id ,	     // 任务id
+      //     context:_this.MissionContent,		// 汇报内容
+      //     totalRate:_this.Reportprogress,		// 任务完成进度
+      //     wordTime:_this.Reportworkinghours,		// 任务汇报工时
+      //     isPushed:1,		// 是否已经推送给发起人(默认为1)
+      //     orgId:_this.MissionDate.orgId   //公司的组织ID 后期定下来再改
+
+     
+    item.name=items.name
+    item.number=item.contract.number
+    item.contractName=item.conStage.name
+    item.contract=items.contract
+    item.stage=items.stage
+    item.id=items.id
+    item.orgId=items.orgId
+   
+     // console.log("点击"+JSON.stringify(item) )
+
+    
       this.$router.push({
         name: "MissionEdit",
         params: {
@@ -132,12 +170,32 @@ export default {
       });
     },
 
+
+    //项目阶段的页面
+    OnClickItme(item){
+      
+      //console.log(item)
+      
+       this.$router.push({name:"PDMaintain",params:{
+         Maintain:item
+       }})
+    },
+
+     
+
     //加载的方法
     _LoadData(){
 
+    
+       var data= JSON.parse(sessionStorage.getItem("activeProject"))
+
+    
       var _this=this  
       var params={
-        contractId:_this.$store.state.project.activeProject.id
+
+        contractId:data.id
+
+        //contractId:_this.$store.state.project.activeProject.id
       }
       
       GetStageList(params)
@@ -145,9 +203,6 @@ export default {
 
                switch (res.data.body.code) {
                 case "1":
-                 
-                  //_this.DDApiAert(res);
-                  console.log(res.data.body.stageTaskList)
                   _this.FlowDatas = res.data.body.stageTaskList;
                   break;
                 case "2":
@@ -164,15 +219,14 @@ export default {
                   break;
               }
 
-
-             
+         
              })
             .catch(err => {
-              alert(err)
+              //alert(err)
               //console.log(err);
             });
 
-    }
+      }  
 
 
   },
@@ -195,11 +249,11 @@ export default {
 
 .container{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(70px, 3fr));
+  
+  grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
   grid-template-rows: repeat(2, auto);
   grid-row-gap: 10px;
   grid-column-gap: 10px
-
 }
 
 .divtext{
@@ -209,6 +263,16 @@ export default {
   cursor: pointer;background-color: #4CAF50;
   color: black
 }
+
+
+.divtextunfinished{
+    border-radius: 10px;
+  text-align: center;
+  word-wrap:break-word ;
+  cursor: pointer;background-color:red;
+  color: black
+}
+
 
 
 .iconcolor {

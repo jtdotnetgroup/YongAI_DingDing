@@ -1,47 +1,27 @@
-import { GetContrList ,GetstageByContIdList} from '@/api/Mission'
+import { GetContrList} from '@/api/Mission'
 const store = {
-    namespace: true,
+    namespace: true, //加上这一句就可以在其他组件了正常访问 actions的方法
     state: {
         contractList: [],
-        stageByContIdList:[]
+       // stageByContIdList:[]
     },
     mutations: {
         SET_CONTRACTLIST: (state, payload) => {
             state.contractList = payload;
         },
-
-        SET_STAGEBYCONTIDLIST: (state, payload) => {
-            state.stageByContIdList = payload;
-        }
     },
     actions: {
         
         //项目合同编号列表
         GetContrListData({ commit }) {
             GetContrList().then(res => {
-                var data = res.data.body.contractList
-                alert(data)
+                var data = res.data.body.contractList    
                 commit('SET_CONTRACTLIST', data)
             }).catch(err => {
 
                alert(err)
             })
-
         },
-
-       //项目阶段列表
-        GetstageByContIdListData({ commit },params){
-            GetstageByContIdList(params).then(res => {
-                var data = res.data.body.stageList
-                commit('SET_STAGEBYCONTIDLIST', data)
-            }).catch(err => {
-    
-               alert(err)
-            })
-
-        }
-
-    
     }
 }
 

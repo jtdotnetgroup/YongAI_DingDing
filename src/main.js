@@ -33,7 +33,14 @@ import{
   Picker,
   Popup,
   DatetimePicker,  
-  Loading
+  Loading,
+  Search,
+  Grid,
+  GridItem,
+  RadioGroup, 
+  Radio,
+  Collapse, 
+  CollapseItem
 } from 'vant'
 
 Vue.use(Lazyload)
@@ -55,8 +62,13 @@ Vue.use(Lazyload)
 .use(Popup)
 .use(DatetimePicker)
 .use(Loading)
-
-
+.use(Search)
+.use(Grid)
+.use(GridItem)
+.use(RadioGroup)
+.use(Radio)
+.use(Collapse)
+.use(CollapseItem)
 // dd.config({
 //   agentId:'273268283',
 //   corpId:'ding2ced2e5420af006835c2f4657eb6378f',
