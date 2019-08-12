@@ -3,9 +3,7 @@
     <van-tabs v-model="active" type="card" animated swipeable>
       <van-tab title="未完成项目">
    
-        <van-list id="projectList">
-        
-
+        <van-list id="projectList">     
           <ProjectItem v-for="(item,index) in projectList" :key="index" :Project="item" />
         </van-list>
       </van-tab>
@@ -15,6 +13,9 @@
         </van-list>
       </van-tab>
     </van-tabs>
+
+
+
   </div>
 </template>
 

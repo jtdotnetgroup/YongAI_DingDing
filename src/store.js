@@ -18,7 +18,7 @@ export default new Vuex.Store({
     code: '',
     userId: '',
     taskname:'',
-    url:"http://66d0ec59.cpolar.io/",
+    url:"http://120.77.40.245:8066/",//http://120.77.40.245:8066 服务器
     agentId:"273268283",   //微应用的ID
     loading:false
   },

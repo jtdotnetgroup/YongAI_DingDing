@@ -78,7 +78,12 @@
       <span class="spanText">原件归档：</span>
       <van-cell-group>
 
-        <van-field v-model="mail" label="邮寄发出" placeholder="请输入邮件" />
+        <van-field v-model="mail" label="邮寄发出" placeholder="请输入邮件"   >
+      
+        <div @click="OnClickScan" slot="right-icon" ><span  size="small" ><van-icon name="scan" size="25" /></span></div> 
+
+
+        </van-field>
         <van-cell  >
           <template slot="title">
             <van-row>
@@ -186,6 +191,7 @@
 <script>
 
 import{ProjectSave} from "@/api/Project";
+import * as dd from "dingtalk-jsapi";
 
 export default {
   data() {
@@ -201,9 +207,40 @@ export default {
     };
   },
   created(){
-   // console.log(this.$route.params.Maintain)
+
   },
   methods:{
+
+
+
+
+    OnClickScan(){
+      var _this=this
+
+    dd.ready(()=>{
+
+    dd.biz.util.scan({
+    onSuccess: function(data) {
+
+      _this.mail=data.text
+    
+    },
+    onFail : function(err) {
+      alert(JSON.stringify(err))
+    }
+
+       })
+    })
+
+
+    
+
+   dd.error(function(error){
+        alert('dd error: ' + JSON.stringify(error));
+      });
+  },
+
+    
 
     OnSubmit(){
    var _this=this

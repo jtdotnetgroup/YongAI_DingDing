@@ -3,7 +3,7 @@ import store from '../store';
 
 
 export const request = axios.create({
-     baseURL: 'http://5f7fa2b5.cpolar.io',
+     baseURL: 'http://120.77.40.245:8088/yapms',
     // baseURL:"192.168.1.165:8080"
     timeout:50000,
     

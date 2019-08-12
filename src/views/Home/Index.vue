@@ -2,7 +2,7 @@
   <div>
     <ImageSwipe />
 
-    <!-- <van-button type="primary" @click="OnClick" size="mini">点击</van-button> -->
+   <!-- <van-button type="primary" @click="OnClick" size="mini">点击</van-button>  -->
 
     <ProjectList />
   </div>
@@ -12,7 +12,7 @@
 
 
 import { GetAccessToken } from "@/api/Project";
-import * as dd from 'dingtalk-jsapi'
+import * as dd from "dingtalk-jsapi";
 export default {
   name: "Home",
   components: {
@@ -33,10 +33,7 @@ export default {
 
   methods: {
 
-  
-
-
-    
+ 
   }
 };
 </script>
