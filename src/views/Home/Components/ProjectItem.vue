@@ -1,79 +1,38 @@
 <template>
-  <!-- <van-panel class="ProjectItem" :title="Project.custName" :status="Project.stage">
-    <van-row class="projectItemHeader" slot="header">
-      <van-col span="19">{{Project.custName}}</van-col>
-      <van-col class="projectStage" span="5">{{Project.stage}}</van-col>
+  <van-panel class="ProjectItem">
+    <van-row class="projectItemHeader" slot="header" :title="Project.contractName">
+      <van-col span="19">{{Project.projuctName}}</van-col>
     </van-row>
-    <van-row class="projectItemContent">
-      <van-col span="20">
-        <div @click="ItemClick">
-          <van-row>
-            <van-col span="24">
-              <van-icon name="user-o"/>
-              {{'业务员：'+Project.contacts.name+' '+Project.mobile}}
-            </van-col>
-            <van-col span="24">
-              <van-icon name="location-o"/>
-              {{Project.addr}}
-            </van-col>
-          </van-row>
-        </div>
-      </van-col>
-      <van-col span="4"> -->
-        <!-- <van-button round type="info" size="normal"> -->
-          <!-- <a class="tel" :href="'tel:'+Project.mobile"> -->        
-          <!-- <span><van-icon size="35px"  name="phone-circle-o"/></span> 
-          </a> -->
-        <!-- </van-button> -->
-      <!-- </van-col>
-    </van-row> -->
-
-    <!-- <van-row class="projectItemFooter" slot="footer">
-      <van-col span="19">{{Project.validdate}}</van-col>
-      <van-col class="updateDate" span="5">{{updateDate}}</van-col>
-    </van-row>
-  </van-panel> -->
-
-
-
- <van-panel class="ProjectItem"  >
-    <van-row class="projectItemHeader" slot="header" :title="Project.name" >
-  
-       <van-col span="19">{{Project.name}}</van-col>
-      
-    </van-row>
-
     <van-row class="projectItemContent">
       <van-col span="20">
         <div @click="ItemClick">
           <van-row>
             <van-col span="24" class="emplNameStyle">
-              <van-icon name="user-o"/>
-              {{'业务员：'+Project.emplName+' '+Project.mobile}}
+              项目类型：<div style="display:inline-block" v-if="!!Project.stageClass">{{Project.stageClass.name}}</div>
+            </van-col>
+          </van-row>
+          <van-row>
+            <van-col span="24" class="emplNameStyle">
+              <van-icon name="user-o" />
+              {{'申报人：'+Project.emplName+' '+Project.mobile}}
             </van-col>
           </van-row>
         </div>
       </van-col>
-      <van-col span="4"> 
-          <a class="tel" :href="'tel:'+Project.mobile">          
-           <span><van-icon size="35px"  name="phone-circle-o"/></span> 
-          </a> 
-      
+      <van-col span="4">
+        <a class="tel" :href="'tel:'+Project.mobile">
+          <span>
+            <van-icon size="35px" name="phone-circle-o" />
+          </span>
+        </a>
       </van-col>
-    </van-row> 
+    </van-row>
 
     <van-row class="projectItemFooter" slot="footer">
       <van-col span="19">{{Project.updateDate}}</van-col>
       <van-col class="updateDate" span="5">{{updateDate}}</van-col>
     </van-row>
-  </van-panel> 
-
-
-
-
-
-  
-  
+  </van-panel>
 </template>
 
 <script>
@@ -98,23 +57,20 @@ export default {
         months: " 个月",
         days: "天",
         hours: "小时",
-        "an hour":"1小时",
-        "a minute":"1分钟",
-        "a few seconds":"刚刚",
+        "an hour": "1小时",
+        "a minute": "1分钟",
+        "a few seconds": "刚刚",
         minutes: "分钟"
       };
-      
-      const datatime=this.$moment(this.Project.updateDate).fromNow(true)
-      let result="";
-      
-      if(datatime.indexOf("a few seconds")>=0){
-         result = this.$moment(this.Project.updateDate).fromNow(true)
-      }else{
-         result = this.$moment(this.Project.updateDate).fromNow(true) + " 前";
+
+      const datatime = this.$moment(this.Project.updateDate).fromNow(true);
+      let result = "";
+
+      if (datatime.indexOf("a few seconds") >= 0) {
+        result = this.$moment(this.Project.updateDate).fromNow(true);
+      } else {
+        result = this.$moment(this.Project.updateDate).fromNow(true) + " 前";
       }
-
-    
-
 
       for (var key in dic) {
         result = result.replace(key, dic[key]);
@@ -128,8 +84,6 @@ export default {
       this.$router.push({
         name: "projectdetailsIndex"
       });
-
-      
     }
   }
 };
@@ -138,6 +92,7 @@ export default {
 <style  scoped>
 .ProjectItem {
   font-size: 0.8rem;
+  border: none !important
 }
 .projectItemHeader,
 .projectItemContent {
@@ -148,28 +103,28 @@ export default {
 .updateDate {
   border: 1px solid rgb(214, 133, 101);
   text-align: center;
-  color:#fff;
-  border-radius:30px;
-  background-color:  rgb(214, 133, 101);
+  color: #fff;
+  border-radius: 30px;
+  background-color: rgb(214, 133, 101);
 }
 .projectItemFooter {
   text-align: left;
 }
-.tel{
+.tel {
   color: #fff;
   padding: 8px;
   border-radius: 100%;
   vertical-align: middle;
-  width:40px;
+  width: 40px;
   height: 40px;
 }
-.tel i{
+.tel i {
   vertical-align: middle;
   top: -2px;
-  background-color: #3487e6; 
-  border-radius: 100%
+  background-color: #3487e6;
+  border-radius: 100%;
 }
-.emplNameStyle{
-  line-height: 2.3
+.emplNameStyle {
+  line-height: 2.3;
 }
 </style>

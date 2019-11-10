@@ -34,6 +34,9 @@ export default {
         { icon: require("@/assets/images/粮食动态决策分析系统.png"), text: "收账进度分析" }
       ]
     };
+  },
+  computed:{
+    
   }
 };
 </script>

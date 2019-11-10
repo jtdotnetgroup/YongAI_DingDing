@@ -1,44 +1,37 @@
 <template>
   <van-panel class="ProjectItem" :title="projecDate.name" >
     <template slot="header">
-      <van-row class="projectHeader">
-        <van-col span="20">{{projecDate.name}}</van-col>
+      <van-row class="">
+        <van-col span="5">项目名称：</van-col>
+        <van-col span="19">{{projecDate.projuctName}}</van-col>
+        <!-- <van-col class="projectStage" span="4">{{projecDate.stage}}</van-col> -->
+      </van-row>
+      <van-row >
+        <van-col span="5">项目编号：</van-col>
+        <van-col span="19">{{contractNumber}}</van-col>
+        <!-- <van-col class="projectStage" span="4">{{projecDate.stage}}</van-col> -->
+      </van-row>
+      <van-row >
+        <van-col span="5">项目类型：</van-col>
+        <van-col span="19">{{projecDate.stageClass.name}}</van-col>
         <!-- <van-col class="projectStage" span="4">{{projecDate.stage}}</van-col> -->
       </van-row>
       <van-row>
-        <van-col span="4">签约时间</van-col>
-        <van-col span="20">{{projecDate.date}}</van-col>
+        <van-col span="5">签约时间：</van-col>
+        <van-col span="19">{{projecDate.date}}</van-col>
       </van-row>
     </template>
     <hr />
-
-    <!-- <van-row>
-      <van-row class="projectbottom">
-        <van-col span="4">
-          <span class="spanPhoneAndadd">客户地址</span>
-        </van-col>
-        <van-col span="16">
-          <span class="spanPhoneAndadd">{{projecDate.addr}}</span>
-        </van-col>
-        <van-col span="3" class="rowcol">
-          <div @click="AddrClick">
-            <van-icon class="iconAddr" name="location-o" />
-          </div>
-        </van-col>
-      </van-row> -->
-
-      <van-row class="projectbottom">
-        <van-col span="4">主联系人</van-col>
-        <van-col span="6">{{projecDate.emplName}}</van-col>
-        <van-col span="10">{{projecDate.pose}}</van-col>
+      <van-row class="">
+        <van-col span="6">项目申报人：</van-col>
+        <van-col span="18">{{projecDate.emplName+ ' ' + projecDate.mobile}}</van-col>
       </van-row>
-
       <van-row>
         <van-col span="4">
-          <span class="spanPhoneAndadd">联系方式</span>
+          <span class="spanPhoneAndadd">客户：</span>
         </van-col>
         <van-col span="16">
-          <span class="spanPhoneAndadd">{{projecDate.mobile}}</span>
+          <span class="spanPhoneAndadd">{{projecDate.custId}}</span>
         </van-col>
         <van-col span="3" class="rowcol">
           <a class="tel" :href="'tel:'+projecDate.mobile">
@@ -46,8 +39,51 @@
           </a>
         </van-col>
       </van-row>
+      <van-row>
+        <van-col span="6">签约单位：</van-col>
+        <van-col span="6">{{projectCompanyName}}</van-col>
+        <van-col span="6">立项时间：</van-col>
+        <van-col span="6">{{projecDate.createDate}}</van-col>
+      </van-row>
     <!-- </van-row> -->
     <hr />
+    <van-row>
+      <van-col span="7">合同金额：</van-col>
+        <van-col span="5">{{projecDate.amount}}</van-col>
+        <van-col span="7">去税合同额：</van-col>
+        <van-col span="5">{{projecDate.deTaxationAmount}}</van-col>
+    </van-row>
+    <van-row>
+      <van-col span="7">预估采购金额:</van-col>
+        <van-col span="5">{{projecDate.estimatedAmount}}</van-col>
+        <van-col span="7">估算毛利率：</van-col>
+        <van-col span="5">{{projecDate.estimatingGrossInterestRate}}</van-col>
+    </van-row>
+    <van-row>
+      <van-col span="7">居间费:</van-col>
+        <van-col span="5">{{projecDate.intermediaryExpenses}}</van-col>
+        <van-col span="7">运输安装费：</van-col>
+        <van-col span="5">{{projecDate.installationFee}}</van-col>
+    </van-row>
+    <van-row>
+      <van-col span="7">差旅费:</van-col>
+        <van-col span="5">{{projecDate.travelExpenses}}</van-col>
+        <van-col span="7">业务招待费：</van-col>
+        <van-col span="5">{{projecDate.businessHospitality}}</van-col>
+    </van-row>
+    <van-row>
+      <van-col span="7">其他费用:</van-col>
+        <van-col span="5">{{projecDate.otherExpenses}}</van-col>
+        <van-col span="7">预估商务费用：</van-col>
+        <van-col span="5">{{projecDate.estimatingBusinessExpenses}}</van-col>
+    </van-row>
+    <van-row>
+      <van-col span="7">商务毛利:</van-col>
+        <van-col span="5">{{projecDate.businessGrossProfit}}</van-col>
+        <van-col span="7">商务毛利率：</van-col>
+        <van-col span="5">{{projecDate.grossBusinessInterestRate}}</van-col>
+    </van-row>
+    <hr/>
   </van-panel>
 </template>
 
@@ -70,7 +106,31 @@ export default {
   computed: {
     projecDate() {
       //return this.$store.state.project.activeProject;
-      return JSON.parse(sessionStorage.getItem("activeProject"));
+      const jsonStr=sessionStorage.getItem("activeProject");
+      let data= JSON.parse(jsonStr);
+      data.date=this.$moment(data.date).format('Y-MM-D')
+      data.createDate=this.$moment(data.createDate).format('Y-MM-D')
+      return data
+    },
+    contractNumber(){
+      const contractNumber=this.projecDate.currentNumber.replace("YACon","")
+      let result=contractNumber+'(';
+      result+=this.projecDate.number!=='null'?this.projecDate.number:'未同步';
+      result+=')';
+      
+      return result;
+    },
+    projectCompanyName(){
+      let list= this.$store.state.project.companyList
+
+      const data=this.projecDate;
+
+      const filters=list.filter(e=>{return e.value===data.companyId})
+
+      if(!!filters&&filters.length>0)
+        return filters[0].label;
+
+      return "";
     }
   }
 };
@@ -125,4 +185,6 @@ export default {
   text-align: center;
   color: white;
 }
+
+
 </style>

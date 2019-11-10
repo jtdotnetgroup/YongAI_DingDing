@@ -72,14 +72,14 @@
         <van-col span="7">
           <span style="color:blue">任务开始时间</span>
         </van-col>
-        <van-col span="15">{{Mission.appointTime}}</van-col>
+        <van-col span="15">{{formatDateTime(Mission.appointTime)}}</van-col>
       </van-row>
 
         <van-row class="projectbottom">
         <van-col span="7">
           <span style="color:blue">任务结束时间</span>
         </van-col>
-        <van-col span="15">{{Mission.requireTime}}</van-col>
+        <van-col span="15">{{formatDateTime(Mission.requireTime)}}</van-col>
       </van-row>
 
 
@@ -103,12 +103,18 @@ export default {
       required:true
     }
   },
+  mounted(){
+  },
   methods: {
+    formatDateTime(datetime){
+      return this.$moment(datetime).format('YYYY-MM-DD')
+    },
     ItmeClick() {
       this.$router.push({
         name: "MissionEdit",
         params: {
-          Mission: this.Mission
+          Mission: this.Mission,
+          
         }
       });
     }

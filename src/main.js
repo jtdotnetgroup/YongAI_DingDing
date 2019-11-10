@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import moment from 'moment'
-
+import addbtn from "@/components/addBtn.vue";
+import tellink from "@/components/tellink.vue";
  import * as dd from 'dingtalk-jsapi'
 
 Vue.config.productionTip = false
@@ -12,7 +13,12 @@ moment.locale('cn')
 Vue.prototype.$moment=moment
 Vue.prototype.$dd=dd;  //全局变量共用的方法
 
+Vue.component("addbtn", addbtn);
+Vue.component("tellink", tellink);
+
 require('./mock.js')
+require('@/configs/global.config.js')
+require('@/configs/router.guard.js')
 
 import{
   Lazyload,
@@ -33,6 +39,7 @@ import{
   Picker,
   Popup,
   DatetimePicker,  
+  Toast,
   Loading,
   Search,
   Grid,
@@ -69,6 +76,7 @@ Vue.use(Lazyload)
 .use(Radio)
 .use(Collapse)
 .use(CollapseItem)
+
 // dd.config({
 //   agentId:'273268283',
 //   corpId:'ding2ced2e5420af006835c2f4657eb6378f',
@@ -83,9 +91,12 @@ Vue.use(Lazyload)
 //   ]
 // })
 
+Vue.prototype.$Toast=Toast
+
 // 放在new vue 里面必须是vue组件库实习的
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+

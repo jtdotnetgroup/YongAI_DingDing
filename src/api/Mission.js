@@ -1,15 +1,5 @@
 import { request } from '../lib/request'
 
-// export function GetMissionList(params){
-//     return request({
-//         url:"/Mission/GetMissionList",
-//         method:'get',
-//         params
-//     })
-// }
-
-
-
 //任务管理的列表
 export function GetMissionList(params) {
     return request({
@@ -27,7 +17,6 @@ export function GetContrList() {
         url: "/f/dingtalk/contract/dt/contrList",
         method: 'get'
     })
-
 }
 
 
@@ -38,7 +27,6 @@ export function GetstageByContIdList(params) {
         method: 'get',
         params: params
     })
-
 }
 
 

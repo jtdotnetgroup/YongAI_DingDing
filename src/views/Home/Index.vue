@@ -3,7 +3,6 @@
     <ImageSwipe />
 
    <!-- <van-button type="primary" @click="OnClick" size="mini">点击</van-button>  -->
-
     <ProjectList />
   </div>
 </template>

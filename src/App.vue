@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <layout />
+   <router-view></router-view>
   </div>
 </template>
 <script>
@@ -14,42 +14,30 @@ export default {
   computed: {},
 
   mounted() {
-   // this.GetCode();
-  },
+    // this.GetCode();
+    let pars = { type: "contracting_unit" };
+    const token = this.$store.state.asscesstoken;
+    const userId = this.$store.state.userId;
 
-  methods: {
-    //   //获取code 的方法
-    // GetCode() {
-    //   var _this = this;
-    //   dd.ready(() => {
-    //     dd.runtime.permission.requestAuthCode({
-    //       corpId: this.$store.state.CorpId,
-    //       onSuccess: function(result) {
-    //         _this.$store.commit("SET_CODE", result.code); //赋值 把值存在 state
-    //         _this.GetAccessTokenUserid();
-    //       },
-    //       onFail: function(err) {
-    //         alert("失败");
-    //       }
+    // if (!!token && !!userId) {
+    //   this.$store.dispatch("GetCompaynList", pars);
+    // } else {
+    //   //alert('不存在token时')
+    //   this.$store.dispatch("GetCode").then(() => {
+    //     this.$store.dispatch("GetAccessTokenData").then(() => {
+    // this.$store.dispatch("GetCompaynList", pars);
+
     //     });
     //   });
-    // },
-
-    //通过code的信息获取AccessTokenUser的信息
-    // GetAccessTokenUserid() {
-    //   var _this = this;
-    //   GetAccessToken()
-    //     .then(res => {
-    //        alert("Token:"+res.data.body.accessToken+","+"userId:"+ res.data.body.userId);
-    //       _this.$store.commit("SET_ASSCESSTOKEN".res.data.body.accessToken);
-    //       _this.$store.commit("SET_USERID".res.data.body.userId);
-    //     })
-    //     .catch(err => {
-    //       alert(err);
-    //     });
     // }
-  }
+  },
+
+  methods: {}
 };
 </script>
 
-<style lang="stylus"></style>
+<style lang="stylus">
+[class*=van-hairline]::after{
+  border:none !important
+}
+</style>

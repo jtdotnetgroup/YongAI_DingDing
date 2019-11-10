@@ -10,13 +10,13 @@ export const routes = [
         path: '/home',
         name: 'home',
         redirect: '/projectlist',
-        meta: {},
-        props: { tabbar: true, title: '永爱·项目管理', activetab: 'home'},
+        props: { tabbar: true,  activetab: 'home'},
         component: layout,
         children: [
             {
                 path: '/projectlist',
                 name: 'projectlist',
+                meta: {title: '永爱·项目管理'},
                 component: () => import('../views/Home/Index.vue')
             }
         ]
@@ -24,13 +24,13 @@ export const routes = [
     {
         path: '/mission',
         name: 'mission',
-        props: { tabbar: true, title: '永爱·任务管理', rightIcon: 'plus', rightPath: '/MissionAdd', activetab: 'missionList'  },
-        meta: {},
+        props: { tabbar: true,   activetab: 'missionList'  },
         component: layout,
         children: [
             {
                 path: '/missionList',
                 name: 'missionList',
+                meta: {title: '永爱·任务管理',btn:{Icon: 'plus', Path: '/MissionAdd',}},
                 component: () => import('../views/Mission/Index.vue')
             }
         ]
@@ -38,12 +38,12 @@ export const routes = [
     {
         path: '/report',
         name: 'report',
-        props: { tabbar: true, title: '永爱·我的报表', activetab: 'ReportForms' },
-        meta: {},
+        props: { tabbar: true,  activetab: 'ReportForms' },
         component: layout,
         children: [{
             path:'/ReportForms',
             name:'ReportForms',
+            meta: {title: '永爱·我的报表',},
             component:()=>import('../views/ReportForms/Index.vue')
 
         }]
@@ -51,12 +51,12 @@ export const routes = [
     {
         path: '/message',
         name: 'message',
-        props: { tabbar: true, title: '永爱·提醒', activetab: 'Information' },
-        meta: {},
+        props: { tabbar: true,  activetab: 'Information' },
         component: layout,
         children: [{
             path:'/Information',
             name:'Information',
+            meta: {title: '永爱·提醒',},
             component:()=>import('../views/Information/Index.vue')
         }]
     },
@@ -64,13 +64,13 @@ export const routes = [
         path: '/projectdetails',
         name: 'projectdetails',
         redirect: '/projectdetails/index',
-        props: { tabbar: false, title: '项目详情' ,},
+        props: { tabbar: false ,},
         component: layout,
         children: [
             {
                 path: '/projectdetails/index',
                 name: 'projectdetailsIndex',
-                meta:{keepalive:true},
+                meta:{title: '项目详情',keepalive:true},
                 component: () => import('../views/ProjectDetail/Index.vue')
             }
 
@@ -81,13 +81,12 @@ export const routes = [
         path: '/PDMaintain',
         name: 'PDMaintain',
         redirect: '/PDMaintain/index',
-        props: { tabbar: false, title: '项目阶段维护',rightIcon: 'wap-home',rightPath: '/home' ,},
-        component: layout,
+        component:layout,
         children: [
             {
                 path: '/PDMaintain/index',
-                name: 'PDMaintain',
-                meta:{keepalive:true},
+                name: 'PDMaintainIndex',
+                meta:{title: '项目阶段维护',keepalive:true},
                 component: () => import('../views/ProjectDetail/Components/PDMaintain.vue')
             }
 
@@ -97,13 +96,14 @@ export const routes = [
     {
         path: '/MissionAdd',
         name: 'MissionAdd',
-        props: { tabbar: false, title: '新建任务', rightIcon: 'wap-home', rightPath: '/home', },
+        props: { tabbar: false, rightIcon: 'wap-home', rightPath: '/home', },
         redirect: '/MissionAdd/index',
         component: layout,
         children: [
             {
                 path: '/MissionAdd/index',
                 name: 'MissionAdd',
+                meta:{title: '新建任务', },
                 component: () => import('../views/Mission/Components/MissionAdd.vue')
             }
         ]
@@ -112,12 +112,13 @@ export const routes = [
     {
         path: '/MissionEdit',
         name: 'MissionEdit',
-        props: { tabbar: false, title: '汇报任务', rightIcon: 'wap-home', rightPath: '/home' ,},
+        props: { tabbar: false,  rightIcon: 'wap-home', rightPath: '/home' ,},
         redirect: '/MissionEdit/index',
         component: layout,
         children: [{
             path: '/MissionEdit/index',
             name: 'MissionEdit',
+            meta:{title: '汇报任务',},
             component:()=>import('../views/Mission/Components/MissionEdit.vue')
         }]
     }

@@ -1,39 +1,35 @@
 <template>
   <van-panel class="ProjectItem" title="任务名">
     <div slot="header">
-      <van-row>   
+      <van-row>
         <van-cell-group>
-          <van-field required v-model="Taskname"   label="任务名" />
+          <van-field required v-model="Taskname" label="任务名" />
         </van-cell-group>
       </van-row>
       <van-row>
-    
-         <van-cell-group>
+        <van-cell-group>
           <van-field
-             required
+            required
             v-model="ContractNo"
             center
             clearable
             label="合同编码"
             placeholder="请输入合同编码"
-          >
-            <van-button slot="button"   @click="OnSearch" size="small" type="primary">搜索</van-button>
-          </van-field>
+            @click="OnSearch"
+          ></van-field>
 
           <van-popup v-model="showPicker" position="bottom">
-          <van-picker
-            show-toolbar
-            :columns="columns"
-            @cancel="showPicker = false"
-            @confirm="onConfirm"
-            @change="onChange"
-          />
-        </van-popup> 
-
+            <van-picker
+              title="合同编号"
+              show-toolbar
+              value-key="key"
+              :columns="columns"
+              @cancel="showPicker = false"
+              @confirm="onConfirm"
+              @change="onChange"
+            />
+          </van-popup>
         </van-cell-group>
-
-
-
       </van-row>
 
       <van-row>
@@ -88,7 +84,8 @@
       />
       <van-popup v-model="showstarttime" position="bottom">
         <van-datetime-picker
-          type="datetime"
+          type="date"
+          :formatter=" formatter " 
           v-model="currentDatestarttime"
           @confirm="OnConfirmstarttime"
           @cancel="Oncancelstarttime"
@@ -108,7 +105,8 @@
       <van-popup v-model="showendtime" position="bottom">
         <van-datetime-picker
           v-model="currentDateendtime"
-          type="datetime"
+          type="date"
+           :formatter=" formatter " 
           @confirm="OnConfirmendtime"
           @cancel="Oncancelendtime"
         />
@@ -117,19 +115,19 @@
 
     <van-row>
       <div @click="OnClickPersonnel">
-      <van-col span="6" class="colcontent">
-        <span class="tabtext">人员</span>
-      </van-col>
+        <van-col span="6" class="colcontent">
+          <span class="tabtext">人员</span>
+        </van-col>
         <van-col span="4" class="colcontent">
-        <van-icon class="tabicon" name="manager-o" />
+          <van-icon class="tabicon" name="manager-o" />
         </van-col>
       </div>
     </van-row>
 
     <van-row>
-      
-        <van-grid :column-num="3" v-if="Personnel">
-        <van-grid-item  border  
+      <van-grid :column-num="3" v-if="Personnel">
+        <van-grid-item
+          border
           v-for="(items,index) in PersonnelData"
           :key="index"
           :icon="items.avatar===''?'manager-o':items.avatar"
@@ -137,23 +135,22 @@
           @click="OnClickItem(items.emplId)"
         />
       </van-grid>
-
     </van-row>
-
 
     <van-row>
       <div @click="OnClickPeoplewhorecipients">
-      <van-col span="6" class="colcontent">
-        <span class="tabtext">抄送人</span>
-      </van-col>
+        <van-col span="6" class="colcontent">
+          <span class="tabtext">抄送人</span>
+        </van-col>
         <van-col span="4" class="colcontent">
-        <van-icon class="tabicon" name="manager-o" />
+          <van-icon class="tabicon" name="manager-o" />
         </van-col>
       </div>
     </van-row>
     <van-row>
-        <van-grid :column-num="3" v-if="Peoplewhorecipients">
-        <van-grid-item  border  
+      <van-grid :column-num="3" v-if="Peoplewhorecipients">
+        <van-grid-item
+          border
           v-for="(items,index) in PeoplewhorecipientsData"
           :key="index"
           :icon="items.avatar===''?'manager-o':items.avatar"
@@ -161,10 +158,7 @@
           @click="OnClickItemImg(items.emplId,items.PeoplewhorecipientsprincipalId)"
         />
       </van-grid>
-
     </van-row>
-
-
 
     <van-row slot="footer">
       <van-col span="24" class="colcontent">
@@ -177,14 +171,26 @@
 </template>
 
 <script>
-
-import { GetContrList, GetstageByContIdList, CreatedTasks,GetoriginatTasksUser } from "@/api/Mission";
-import { GetJsapiTicket } from "@/api/ddjsapi"
+import {
+  GetContrList,
+  GetstageByContIdList,
+  CreatedTasks,
+  GetoriginatTasksUser
+} from "@/api/Mission";
+import { GetJsapiTicket } from "@/api/ddjsapi";
 import * as dd from "dingtalk-jsapi";
 export default {
-
+  name: "MissionAdd",
   data() {
     return {
+      formatter(type, value) {
+        if (type === "year") {
+          return `${value}年`;
+        } else if (type === "month") {
+          return `${value}月`;
+        }
+        return value;
+      },
       MissionContent: "",
       ContractNo: "",
       showPicker: false,
@@ -203,16 +209,16 @@ export default {
       contractList: [], //用于记录合同的数据
       Taskstagecolumns: [], //任务阶段
       TaskstagecolumnsList: [], //记录任务阶段的数据
-      PersonnelData:[],
-      Personnel:false,
-      PeoplewhorecipientsData:[], //抄送人
-      Peoplewhorecipients:false, //抄送人
+      PersonnelData: [],
+      Personnel: false,
+      PeoplewhorecipientsData: [], //抄送人
+      Peoplewhorecipients: false, //抄送人
 
-      timeStamp:'',//签名的方法的参数
-      nonceStr:'',
-      signature:'',
-      PersonnelprincipalId:0,//人员  数据库需要返回的principalId
-      PeoplewhorecipientsprincipalId:[] //抄送人 数据库需要返回的principalId
+      timeStamp: "", //签名的方法的参数
+      nonceStr: "",
+      signature: "",
+      PersonnelprincipalId: 0, //人员  数据库需要返回的principalId
+      PeoplewhorecipientsprincipalId: [] //抄送人 数据库需要返回的principalId
     };
   },
   created() {
@@ -220,76 +226,73 @@ export default {
   },
   methods: {
     //选择合同编号列表
-     GetContrListData() {
-
-       if(this.$store.state.mission.contractList.length===0){
-         this.$store.dispatch('GetContrListData')
-       }
-     
+    GetContrListData() {
+      if (this.$store.state.mission.contractList.length === 0) {
+        this.$store.dispatch("GetContrListData");
+      }
     },
 
-
-
-
     //搜索的方法
-    OnSearch(){
-
-      if(!!this.ContractNo){
-
-        this.columnsData();
-         this.showPicker=true
-
-      }
-     
+    OnSearch() {
+      this.columnsData();
+      this.showPicker = true;
     },
 
     //合同表编码的数据
-    columnsData(){
-       var data=this.$store.state.mission.contractList
-      
-          this.columns=[]
-          this.cols={}
-          this.contractList = [];
-          this.contractList = data;
-          console.log(data); 
+    columnsData() {
+      const data = this.$store.state.mission.contractList;
 
-        const screenData= data.filter(e=>{
+      if (this.columns.length === data.length) {
+        return;
+      }
 
-             if(e.name.indexOf(this.ContractNo)>=0||e.number.indexOf(this.ContractNo)>=0){
-               return e;
-             }               
-          })
-      
-          screenData.forEach(e => {
-            this.cols[e.name] = [e.number];
+      this.columns = [];
+      this.cols = {};
+      this.contractList = [];
+      this.contractList = data;
+
+      try {
+        let screenData = [];
+        if (!!this.ContractNo) {
+          screenData = data.filter(e => {
+            if (
+              // (!!e.name && e.name.indexOf(this.ContractNo) >= 0) ||
+              !!e.number &&
+              e.number.indexOf(this.ContractNo) >= 0
+            ) {
+              return e;
+            }
           });
-          var key = Object.keys(this.cols);
-    
-         if(key.length>0){
-            this.columns.push(
-            { values: Object.keys(this.cols), className: "contract" },
-            { values: this.cols[key[0]], className: "project" }
-          );
-         }
-        
+        } else {
+          screenData = data;
+        }
+
+        screenData.forEach(e => {
+          let itemkey = e.currentNumber + "\r\n(";
+          itemkey += e.number === null ? e.number : "未同步";
+          itemkey += ")";
+
+          itemkey = itemkey.toLowerCase().replace("yacon", "");
+
+          let item = { value: e.id, key: itemkey };
+
+          this.columns.push(item);
+        });
+      } catch (error) {
+        alert("error" + JSON.stringify(error));
+      }
     },
-
-
-
 
     // 根据选择的合同编码取ID
     GetcontractListBycontractId(projectname) {
       const contractId = this.contractList.find(e => {
         return e.number === projectname;
       });
-      if(!!contractId){
-
-         return contractId.id;
-
-      }else{
-        return 0
+      if (!!contractId) {
+        return contractId.id;
+      } else {
+        return 0;
       }
-     
     },
 
     // 任务阶段名称去值
@@ -297,18 +300,21 @@ export default {
       const data = this.TaskstagecolumnsList.find(e => {
         return e.name === TaskStage;
       });
-       if(!!data){
-      return data.id;
-       }
-       else{
-        return 0
+      if (!!data) {
+        return data.id;
+      } else {
+        return 0;
       }
     },
 
     //选择任务阶段列表
-    GetTaskstageData(projectname) {
+    GetTaskstageData(selectItem) {
+      const project = this.contractList.filter(c => {
+        return c.id === selectItem.value;
+      })[0];
+
       var params = {
-        contractId: this.GetcontractListBycontractId(projectname)
+        contractId: project.id
       };
 
       GetstageByContIdList(params)
@@ -342,28 +348,20 @@ export default {
 
     //验证是否为空
     verification() {
-      if (!(!!this.Taskname)) {
-      
+      if (!!!this.Taskname) {
         alert("任务名称不能为空");
 
         return true;
-       } 
-      else if (!(!!this.TaskStage)) {
-        
+      } else if (!!!this.TaskStage) {
         alert("任务阶段不能为空");
         return true;
-      } 
-      else if (!!!this.MissionContent) {
-       
+      } else if (!!!this.MissionContent) {
         alert("任务内容不能为空");
         return true;
       } else if (!!!this.ContractNo) {
-      
         alert("合同编号不能为空");
         return true;
-      }
-       else if (!!!this.ContractName) {
-      
+      } else if (!!!this.ContractName) {
         alert("项目名称不能为空");
         return;
       }
@@ -377,58 +375,61 @@ export default {
         return;
       } //验证是否为空的方法
 
-       var params = {
-          name: _this.Taskname,
-          status: "0",
-          contract: _this.GetcontractListBycontractId(_this.ContractNo),
-          stage: _this.GetTaskstageBystageId(_this.TaskStage),
-          isMain: "0",
-          principalId: _this.PersonnelprincipalId,
-          addreId:_this.PeoplewhorecipientsprincipalId.join(','),//抄送人数组ID
-          remarks: _this.MissionContent,
-          appointTime:_this.StartTime ,
-          requireTime:_this.StartTime
+      var params = {
+        name: _this.Taskname,
+        status: "0",
+        contract: _this.GetcontractListBycontractId(_this.ContractNo),
+        stage: _this.GetTaskstageBystageId(_this.TaskStage),
+        isMain: "0",
+        principalId: _this.PersonnelprincipalId,
+        addreId: _this.PeoplewhorecipientsprincipalId.join(","), //抄送人数组ID
+        remarks: _this.MissionContent,
+        appointTime: _this.StartTime,
+        requireTime: _this.StartTime
       };
-
 
       //保存的方法
       CreatedTasks(params)
         .then(res => {
-           switch (res.data.body.code) {
-                case "1":    
-                   alert("保存成功");
-                    _this.$router.push({
-                      name: "missionList"
-                    });
-                   
-                  break;
-                case "2":
-                  alert("请求的用户不存在");
-                  break;
-                case "3":
-                  alert("请求的用户禁用状态");
-                  break;
-                case "4":
-                   alert("为请求的钉钉的Token失效，重新登录");
-                  break;
+          switch (res.data.body.code) {
+            case "1":
+              alert("保存成功");
+              _this.$router.push({
+                name: "missionList"
+              });
 
-                default:
-                  break;
-              }
+              break;
+            case "2":
+              alert("请求的用户不存在");
+              break;
+            case "3":
+              alert("请求的用户禁用状态");
+              break;
+            case "4":
+              alert("为请求的钉钉的Token失效，重新登录");
+              break;
+
+            default:
+              break;
+          }
         })
         .catch(err => {
           console.log(err);
           // alert("错误"+err);
         });
-
     },
 
     //合同编号
     onConfirm(value) {
-      this.ContractNo = value[1];
+      this.ContractNo = value.key;
       this.showPicker = false;
-      this.ContractName = value[0];
-      this.GetTaskstageData(value[1]);
+
+      let project = this.contractList.filter(c => {
+        return c.id === value.value;
+      })[0];
+
+      this.ContractName = project.projuctName;
+      this.GetTaskstageData(value);
     },
 
     //项目阶段的回调方法
@@ -440,358 +441,312 @@ export default {
     // 开始时间的确定关闭
     OnConfirmstarttime(value) {
       this.showstarttime = false;
-      this.StartTime = this.$moment(value).format("YYYY-MM-DD HH:mm:ss");
+      this.StartTime = this.$moment(value).format("YYYY-MM-DD");
     },
     // 开始时间的取消关闭
     Oncancelstarttime() {
-      this.StartTime=""
+      this.StartTime = "";
       this.showstarttime = false;
     },
     //结束时间的确定关闭
     OnConfirmendtime(value) {
       this.showendtime = false;
-      this.EndTime = this.$moment(value).format("YYYY-MM-DD HH:mm:ss");
+      this.EndTime = this.$moment(value).format("YYYY-MM-DD");
     },
     //结束时间的取消关闭
     Oncancelendtime() {
-      this.EndTime=""
+      this.EndTime = "";
       this.showendtime = false;
     },
 
     //合同编号 联动选择 项目名称
     onChange(picker, values) {
-      picker.setColumnValues(1, this.cols[values[0]]);
+      // const project=this.contractList.filter(c=>{return c.id===values.value})
+      // picker.setColumnValues(1, project[0].projuctName);
     },
 
     //选择人员的方法
-    OnClickPersonnel(){
-
-      var _this=this
-      var params={
-        url:_this.$store.state.url
-      }
-      GetJsapiTicket(params).then(res=>{
-        _this.timeStamp=res.data.body.timeStamp
-        _this.nonceStr=res.data.body.nonceStr
-        _this.signature=res.data.body.signature
-        _this.GetDDPersonnel()
-      }).catch(err=>{
-        //  alert(err);
-      })        
-  
+    OnClickPersonnel() {
+      var _this = this;
+      var params = {
+        url: _this.$store.state.url
+      };
+      GetJsapiTicket(params)
+        .then(res => {
+          _this.timeStamp = res.data.body.timeStamp;
+          _this.nonceStr = res.data.body.nonceStr;
+          _this.signature = res.data.body.signature;
+          _this.GetDDPersonnel();
+        })
+        .catch(err => {
+          //  alert(err);
+        });
     },
-
 
     //抄送人选择
-    OnClickPeoplewhorecipients(){
-
-       var _this=this
-      var params={
-        url:_this.$store.state.url
-      }
-      GetJsapiTicket(params).then(res=>{
-        _this.timeStamp=res.data.body.timeStamp
-        _this.nonceStr=res.data.body.nonceStr
-        _this.signature=res.data.body.signature
-        _this.GetDDPeoplewhorecipients()
-      }).catch(err=>{
-         // alert(err);
-      })        
-      
-
+    OnClickPeoplewhorecipients() {
+      var _this = this;
+      var params = {
+        url: _this.$store.state.url
+      };
+      GetJsapiTicket(params)
+        .then(res => {
+          _this.timeStamp = res.data.body.timeStamp;
+          _this.nonceStr = res.data.body.nonceStr;
+          _this.signature = res.data.body.signature;
+          _this.GetDDPeoplewhorecipients();
+        })
+        .catch(err => {
+          // alert(err);
+        });
     },
-   //人员的方法
-   GetDDPersonnel(){
-     var _this=this
+    //人员的方法
+    GetDDPersonnel() {
+      var _this = this;
 
-      _this.DDConfig()//钉钉配置方法
+      _this.DDConfig(); //钉钉配置方法
 
-        dd.ready(()=>{
-         
-          dd.biz.contact.complexPicker({
-            title:"选择人员",            //标题
-            corpId:_this.$store.state.CorpId,              //企业的corpId
-            multiple:false,            //是否多选
-            limitTips:"超出了",          //超过限定人数返回提示
-            maxUsers:1000,            //最大可选人数
-            pickedUsers:[],            //已选用户
-            pickedDepartments:[],          //已选部门
-            disabledUsers:[],            //不可选用户
-            disabledDepartments:[],        //不可选部门
-            requiredUsers:[],            //必选用户（不可取消选中状态）
-            requiredDepartments:[],        //必选部门（不可取消选中状态）
-            appId:273268283,              //微应用的Id
-            responseUserOnly:false,        //返回人，或者返回人和部门
-            startWithDepartmentId:0 ,   //仅支持0和-1
-            onSuccess: function(result) {
+      dd.ready(() => {
+        dd.biz.contact.complexPicker({
+          title: "选择人员", //标题
+          corpId: _this.$store.state.CorpId, //企业的corpId
+          multiple: false, //是否多选
+          limitTips: "超出了", //超过限定人数返回提示
+          maxUsers: 1000, //最大可选人数
+          pickedUsers: [], //已选用户
+          pickedDepartments: [], //已选部门
+          disabledUsers: [], //不可选用户
+          disabledDepartments: [], //不可选部门
+          requiredUsers: [], //必选用户（不可取消选中状态）
+          requiredDepartments: [], //必选部门（不可取消选中状态）
+          appId: 273268283, //微应用的Id
+          responseUserOnly: false, //返回人，或者返回人和部门
+          startWithDepartmentId: 0, //仅支持0和-1
+          onSuccess: function(result) {
+            _this.PersonnelData = [];
+            _this.PersonnelprincipalId = [];
 
-               _this.PersonnelData=[]
-               _this.PersonnelprincipalId=[]
- 
-                 var params={
-                    emplId:result.users[0].emplId
-                  }
-      
-               GetoriginatTasksUser(params).then(res=>{
-                  
+            var params = {
+              emplId: result.users[0].emplId
+            };
+
+            GetoriginatTasksUser(params)
+              .then(res => {
                 switch (res.data.body.code) {
-                case "1":
-                  _this.PersonnelprincipalId=res.data.body.principalId
-                  _this.PersonnelData=result.users
-                  
-                  break;
-                case "2":
-               
-                  alert("请求的用户不存在")
-                  break;
-                case "3":
-                 
-                  alert("请求的用户禁用状态")
-                  break;
-                case "4":
-         
-                  alert("为请求的钉钉的Token失效，重新登录")
-                  break;
-                   case "5":
-               
-                    alert("请将该用户手动同步到本地！联系管理员，操作同步信息")
-                  break;
+                  case "1":
+                    _this.PersonnelprincipalId = res.data.body.principalId;
+                    _this.PersonnelData = result.users;
 
-                default:
-                  break;
-              }
+                    break;
+                  case "2":
+                    alert("请求的用户不存在");
+                    break;
+                  case "3":
+                    alert("请求的用户禁用状态");
+                    break;
+                  case "4":
+                    alert("为请求的钉钉的Token失效，重新登录");
+                    break;
+                  case "5":
+                    alert("请将该用户手动同步到本地！联系管理员，操作同步信息");
+                    break;
 
-                  }).catch(err=>{
-                     // alert("错误"+err);
-                  })    
-
-          
-              _this.Personnel=true
-            },
-          onFail : function(err) {
-            alert("错误"+JSON.stringify(err))
-          }
-        })
-      });
-      dd.error(function(error){
-
-        alert('dd error: ' + JSON.stringify(error));
-      });
-   },
-
-    OnClickItem(index){
-
-     var _this=this
-
-    dd.device.notification.confirm({
-    message: "确定删除人员吗",
-    title: "提示",
-    buttonLabels: ['取消', '确定'],
-    onSuccess : function(result) {
-
-      if(result.buttonIndex===1){  
-         const data=_this.PersonnelData.filter(e=>{
-         return   e.emplId!==index})
-      _this.PersonnelData=data
-
-
-      _this.PersonnelprincipalId=0
-
-      }
-    },
-    onFail : function(err) {}
-    });
-
-    
-    },
-
-    OnClickItemImg(emplId,PeoplewhorecipientsprincipalId){
-
-       var _this=this
-
-    dd.device.notification.confirm({
-    message: "确定删除人员吗",
-    title: "提示",
-    buttonLabels: ['取消', '确定'],
-    onSuccess : function(result) {
-
-      if(result.buttonIndex===1){  
-         const data=_this.PeoplewhorecipientsData.filter(e=>{
-         return   e.emplId!==emplId
-      })
-
-        _this.PeoplewhorecipientsData=data
-
-
-    //抄送人ID    
-     const PData= _this.PeoplewhorecipientsprincipalId.filter(e=>{
-       return e !==PeoplewhorecipientsprincipalId
-     })
-      _this.PeoplewhorecipientsprincipalId=PData
-
-      }
-    },
-    onFail : function(err) {}
-    });
-
-   
-
-    },
-
-      //抄送人
-     GetDDPeoplewhorecipients(){
-     var _this=this
-
-     _this.DDConfig()//钉钉配置方法
-
-        dd.ready(()=>{
-         
-          dd.biz.contact.complexPicker({
-            title:"选择人员",            //标题
-            corpId:_this.$store.state.CorpId,              //企业的corpId
-            multiple:true,            //是否多选
-            limitTips:"超出了",          //超过限定人数返回提示
-            maxUsers:1000,            //最大可选人数
-            pickedUsers:[],            //已选用户
-            pickedDepartments:[],          //已选部门
-            disabledUsers:[],            //不可选用户
-            disabledDepartments:[],        //不可选部门
-            requiredUsers:[],            //必选用户（不可取消选中状态）
-            requiredDepartments:[],        //必选部门（不可取消选中状态）
-            appId:273268283,              //微应用的Id
-            responseUserOnly:false,        //返回人，或者返回人和部门
-            startWithDepartmentId:0 ,   //仅支持0和-1
-            onSuccess: function(result) { 
-             var  arrprincipalId=[]
-               result.users.forEach(e => {
-                arrprincipalId.push(e.emplId)                         
-               });
-
-           
-
-              var params={
-                    addreId:arrprincipalId.join(',')
-                  }
-      
-                 
-               GetoriginatTasksUser(params).then(res=>{
-         
-              switch (res.data.body.code) {
-                case "1":
-                     const ArrDataID=[]
-
-                   
-                     res.data.body.userList.forEach(e=>{
-                       if(!!e.userIdDt){ // 人员同步
-                       _this.PeoplewhorecipientsprincipalId.push(e.id)// 返回给后台需要用到的id
-
-                        ArrDataID.push({userIdDt:e.userIdDt,id:e.id})//把数据库存在钉钉同步的数据用户数据
-
-                       }
-                     })
-
-                      
-                var  Staffname=""//显示没有同步钉钉用户的名称
-
-                  result.users.forEach(es=>{
-
-                    let tmp=ArrDataID.filter(o=>{return es.emplId===o.userIdDt })
-                    if(tmp.length===0){
-
-                       Staffname+=es.name+','
-
-                    }else{
-
-                    
-                        const data={
-                          PeoplewhorecipientsprincipalId:tmp[0].id,              
-                          name:es.name,
-                          avatar:es.avatar,
-                          emplId:es.emplId,
-                        }
-
-                      _this.PeoplewhorecipientsData.push(data)
-
-                   
-                    }
-                  })
-                   
-
-                      if(Staffname.length>0){
-
-                        alert(Staffname +"    请将该用户手动同步到本地！联系管理员，操作同步信息")
-                      }
-
-
-                  break;
-                case "2":         
-                  alert("请求的用户不存在")
-                  break;
-                case "3":
-                 
-                  alert("请求的用户禁用状态")
-                  break;
-                case "4":
-         
-                  alert("为请求的钉钉的Token失效，重新登录")
-                  break;
-                default:
-                  break;
+                  default:
+                    alert("请求异常！");
+                    break;
                 }
+              })
+              .catch(err => {
+                // alert("错误"+err);
+              });
 
-               }).catch(err=>{
-
-               })
-
-              _this.Peoplewhorecipients=true
-                 
-            },
-          onFail : function(err) {
-            alert("错误"+JSON.stringify(err))
+            _this.Personnel = true;
+          },
+          onFail: function(err) {
+            alert("错误" + JSON.stringify(err));
           }
-        })
+        });
       });
-      dd.error(function(error){
+      dd.error(function(error) {
+        alert("dd error: " + JSON.stringify(error));
+      });
+    },
 
-        alert('dd error: ' + JSON.stringify(error));
+    OnClickItem(index) {
+      var _this = this;
+
+      dd.device.notification.confirm({
+        message: "确定删除人员吗",
+        title: "提示",
+        buttonLabels: ["取消", "确定"],
+        onSuccess: function(result) {
+          if (result.buttonIndex === 1) {
+            const data = _this.PersonnelData.filter(e => {
+              return e.emplId !== index;
+            });
+            _this.PersonnelData = data;
+
+            _this.PersonnelprincipalId = 0;
+          }
+        },
+        onFail: function(err) {}
       });
-   },
-    
+    },
+
+    OnClickItemImg(emplId, PeoplewhorecipientsprincipalId) {
+      var _this = this;
+
+      dd.device.notification.confirm({
+        message: "确定删除人员吗",
+        title: "提示",
+        buttonLabels: ["取消", "确定"],
+        onSuccess: function(result) {
+          if (result.buttonIndex === 1) {
+            const data = _this.PeoplewhorecipientsData.filter(e => {
+              return e.emplId !== emplId;
+            });
+
+            _this.PeoplewhorecipientsData = data;
+
+            //抄送人ID
+            const PData = _this.PeoplewhorecipientsprincipalId.filter(e => {
+              return e !== PeoplewhorecipientsprincipalId;
+            });
+            _this.PeoplewhorecipientsprincipalId = PData;
+          }
+        },
+        onFail: function(err) {}
+      });
+    },
+
+    //抄送人
+    GetDDPeoplewhorecipients() {
+      var _this = this;
+
+      _this.DDConfig(); //钉钉配置方法
+
+      dd.ready(() => {
+        dd.biz.contact.complexPicker({
+          title: "选择人员", //标题
+          corpId: _this.$store.state.CorpId, //企业的corpId
+          multiple: true, //是否多选
+          limitTips: "超出了", //超过限定人数返回提示
+          maxUsers: 1000, //最大可选人数
+          pickedUsers: [], //已选用户
+          pickedDepartments: [], //已选部门
+          disabledUsers: [], //不可选用户
+          disabledDepartments: [], //不可选部门
+          requiredUsers: [], //必选用户（不可取消选中状态）
+          requiredDepartments: [], //必选部门（不可取消选中状态）
+          appId: 273268283, //微应用的Id
+          responseUserOnly: false, //返回人，或者返回人和部门
+          startWithDepartmentId: 0, //仅支持0和-1
+          onSuccess: function(result) {
+            var arrprincipalId = [];
+            result.users.forEach(e => {
+              arrprincipalId.push(e.emplId);
+            });
+
+            var params = {
+              addreId: arrprincipalId.join(",")
+            };
+
+            GetoriginatTasksUser(params)
+              .then(res => {
+                switch (res.data.body.code) {
+                  case "1":
+                    const ArrDataID = [];
+
+                    res.data.body.userList.forEach(e => {
+                      if (!!e.userIdDt) {
+                        // 人员同步
+                        _this.PeoplewhorecipientsprincipalId.push(e.id); // 返回给后台需要用到的id
+
+                        ArrDataID.push({ userIdDt: e.userIdDt, id: e.id }); //把数据库存在钉钉同步的数据用户数据
+                      }
+                    });
+
+                    var Staffname = ""; //显示没有同步钉钉用户的名称
+
+                    result.users.forEach(es => {
+                      let tmp = ArrDataID.filter(o => {
+                        return es.emplId === o.userIdDt;
+                      });
+                      if (tmp.length === 0) {
+                        Staffname += es.name + ",";
+                      } else {
+                        const data = {
+                          PeoplewhorecipientsprincipalId: tmp[0].id,
+                          name: es.name,
+                          avatar: es.avatar,
+                          emplId: es.emplId
+                        };
+
+                        _this.PeoplewhorecipientsData.push(data);
+                      }
+                    });
+
+                    if (Staffname.length > 0) {
+                      alert(
+                        Staffname +
+                          "    请将该用户手动同步到本地！联系管理员，操作同步信息"
+                      );
+                    }
+
+                    break;
+                  case "2":
+                    alert("请求的用户不存在");
+                    break;
+                  case "3":
+                    alert("请求的用户禁用状态");
+                    break;
+                  case "4":
+                    alert("为请求的钉钉的Token失效，重新登录");
+                    break;
+                  default:
+                    break;
+                }
+              })
+              .catch(err => {});
+
+            _this.Peoplewhorecipients = true;
+          },
+          onFail: function(err) {
+            alert("错误" + JSON.stringify(err));
+          }
+        });
+      });
+      dd.error(function(error) {
+        alert("dd error: " + JSON.stringify(error));
+      });
+    },
+
     //钉钉config 配置
-    DDConfig(){
-      var _this=this
+    DDConfig() {
+      var _this = this;
 
-       dd.config({
-        agentId:_this.$store.state.agentId,
-        corpId:_this.$store.state.CorpId,
-        timeStamp:_this.timeStamp,
-        nonceStr:_this.nonceStr,
-        signature:_this.signature,     
-        jsApiList:[
-          'biz.contact.complexPicker'
-        ]
+      dd.config({
+        agentId: _this.$store.state.agentId,
+        corpId: _this.$store.state.CorpId,
+        timeStamp: _this.timeStamp,
+        nonceStr: _this.nonceStr,
+        signature: _this.signature,
+        jsApiList: ["biz.contact.complexPicker", "biz.clipboardData.setData"]
       });
-
     }
-
-
-
-
   },
-  computed: {
-  }
+  computed: {}
 };
 </script>
 
 <style  scoped>
-
-.container{
-  display:grid;
+.container {
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(70px, 3fr));
   grid-template-rows: repeat(2, auto);
   grid-row-gap: 10px;
   grid-column-gap: 10px;
-  justify-items:center
+  justify-items: center;
 }
 
 .buttonsubmit {

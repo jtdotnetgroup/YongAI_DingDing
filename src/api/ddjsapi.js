@@ -11,6 +11,8 @@ export function GetJsapiTicket(params) {
 }
 
 
+
+
 //获取签名的方法（鉴权）
 export function GetAccessToken() {
     return request({

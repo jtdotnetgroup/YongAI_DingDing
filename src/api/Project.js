@@ -1,19 +1,11 @@
 import {request} from '../lib/request'
 
-// export function GetProjectList(params){
-//     return request({
-//         url:'/Project/GetProjectList',
-//         method:'get',
-//         params
-//     })
-// }
-
-
-
 export function GetProjectList(params){
     return request({
         url:'/f/dingtalk/contract/list',
-        method:'post',     
+        method:'post',
+        headers:{ "pageNo":1,
+        "Content-Type":"text/plain;charset=UTF-8"},     
         data:params
     })
 }
@@ -22,7 +14,18 @@ export function GetProjectList(params){
 export function GetStageList(params){
     return request({
         url:'/f/dingtalk/bdstage/dt/bdStageList',
-        method:'get',     
+        method:'get', 
+        headers:{ "pageNo":1,
+        "Content-Type":"text/plain;charset=UTF-8"},      
+        params:params
+    })
+}
+
+//项目类型接口
+export function GetProjectType(params){
+    return request({
+        url:'/f/dingtalk/common/getConStageList',
+        method:'get', 
         params:params
     })
 }

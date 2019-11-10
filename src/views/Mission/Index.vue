@@ -1,7 +1,7 @@
 <template>
   <div>
 
-
+  <addbtn url="/MissionAdd" />
   <van-search  v-model="TaskManagement" placeholder="请输入搜索关键词"  shape="round"  show-action   @search="onSearch"  @clear="OnClear">
    <div slot="action" @click="onSearch" >搜索</div>
 </van-search>

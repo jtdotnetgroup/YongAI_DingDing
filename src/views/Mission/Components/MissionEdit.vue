@@ -11,7 +11,7 @@
 
           <van-row>
             <van-cell-group>
-              <van-field :value="MissionDate.number" label="合同编码" disabled />
+              <van-field :value="contractNumber" label="合同编码" disabled />
             </van-cell-group>
           </van-row>
 
@@ -140,7 +140,6 @@ export default {
 
   mounted() {
 
-    console.log(this.$route.params.Mission)
     this._loadData();
   },
   methods: {
@@ -196,18 +195,7 @@ export default {
 
      if (_this.verification() === true) {
         return;
-      } //验证是否为空的方法
-
-      //  var params = {
-      //     contractId:_this.MissionDate.contract,		// 合同id
-      //     stageId:_this.MissionDate.stage,	 // 阶段id
-      //     taskId:_this.MissionDate.id ,	     // 任务id
-      //     context:_this.MissionContent,		// 汇报内容
-      //     totalRate:_this.Reportprogress,		// 任务完成进度
-      //     wordTime:_this.Reportworkinghours,		// 任务汇报工时
-      //     isPushed:1,		// 是否已经推送给发起人(默认为1)
-      //     orgId:_this.MissionDate.orgId   //公司的组织ID 后期定下来再改
-      //  };
+      } 
 
 
      const data=_this.fileList
@@ -266,36 +254,17 @@ export default {
       this.showRecord = true;
     },
 
-   
-
-    // //上传图片
-    // afterRead(file){
-
-    //   const data=this.fileList
-    //   const filedata=[]
-
-    //   let param = new FormData(); 
-    
-    //   for (let i = 0; i < data.length; i++) {
-    //    param.append("content", data[i].content);
-    //     param.append("file",  data[i].file);    
-    //  }
-
-    //    param.append("taskId",  this.MissionDate.id);    
-    //   param.append("taskReportId", "123");    
-    
-    //    console.log(param.getAll("file"));
-    //   TaskUploadSave(param).then(res=>{
-    //      alert(res)
-
-    //   }).catch(err=>{
-    //     alert(err)
-    //   })
-    //   // console.log(file);
-    // }
   },
   computed: {
-
+    contractNumber(){
+      const contract=this.$route.params.contractNumber
+      const contractNumber=contract.currentNumber.replace("YACon","")
+      let result=contractNumber+'(';
+      result+=contract.number!=='null'?contract.number:'未同步';
+      result+=')';
+      
+      return result;
+    }
   }
 };
 </script>

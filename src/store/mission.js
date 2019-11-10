@@ -15,11 +15,11 @@ const store = {
         //项目合同编号列表
         GetContrListData({ commit }) {
             GetContrList().then(res => {
-                var data = res.data.body.contractList    
+                var data = res.data.body.contractList   
                 commit('SET_CONTRACTLIST', data)
             }).catch(err => {
 
-               alert(err)
+               alert(JSON.stringify( err))
             })
         },
     }
